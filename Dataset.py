@@ -19,7 +19,7 @@ class Dataset():
         # Import default dataset (data.csv) (will create if missing)
         self.data_df = None
         if os.path.exists(self.path):
-            self.data_df = pd.read_csv(self.path, index_col="word")
+            self.data_df = pd.read_csv(self.path, index_col=0)
 
     def load(self):
         return self.data_df

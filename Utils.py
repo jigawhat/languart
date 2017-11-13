@@ -12,6 +12,9 @@ from collections import OrderedDict
 import pandas as pd
 
 
+def within(x, r):
+    return r[0] <= x <= r[1]
+
 # Print directly using standard output
 def sys_print(obj):
     sys.stdout.write(str(obj))
