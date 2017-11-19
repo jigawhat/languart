@@ -50,8 +50,8 @@ library = WordRepLibrary(word_rep_data)
 
 print("\n *** Ready to add new words to dataset ***")
 print(" *** Enter the random word characteristics (space-separated) or\n" + \
-      "     enter a specific word by typing \"WORD:example 5 0 2.5 ...\"")
-print('\n' + l_key_note + '\n' + '\n'.join(l_key.split('\n')[:n_y]) + '\n')
+      "     enter a specific word by typing \"WORD:example 1 3.5 7 ...\"")
+print('\n' + '\n'.join(l_key.split('\n')[:n_y]) + '\n')
 
 while True:
 
@@ -63,6 +63,16 @@ while True:
     # Skip word if not found in Google 1gram counts
     if word not in ngrams_db.index:
         continue
+
+    # Skip word if it contains non-english characters/punctuation
+    skip = False
+    for char in word:
+        ordi = ord(char)
+        if(ordi >= 127 or ordi < 33):
+            print("Word \"" + word + "\" skipped (language/symbols)")
+            skip = True
+            break
+    if skip: continue
 
     # Send word to clipboard
     df_ = pd.DataFrame([word])
@@ -93,7 +103,7 @@ while True:
     y = [y_ for y_ in y if y_.replace('.','').isnumeric()]
     y = [float(y_) for y_ in y]
     for j in range(len(y)):
-        if Y_types[j] == bool and y[j] != 0.0 and y[j] != 1.0:
+        if Y_types[j] is bool and y[j] != 0.0 and y[j] != 1.0:
             print("Word not added (non binary encountered)")
             continue
 

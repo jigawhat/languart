@@ -21,17 +21,16 @@ ngrams_count_period = [2000, 2020]   # (Inclusive)
 # Fields data types information
 
 labels_default = \
-    ['val', 'nrd', 'skt', 'sktb', 'vis', 'visb', 'phy', 'phyb',
-     'obj', 'objb', 'com', 'comb', 'ngc', 'nbc', 'gsc']
+    ['val', 'dif', 'nrd', 'skt', 'vis', 'phy',
+     'obj', 'com', 'ngc', 'nbc', 'gsc']
 
-Y_types = [bool, float, float, bool, float, bool, float, bool, float, bool,
-           float, bool]
+Y_types = [bool, float, float, float, float, float, float, float]
 n_stat = 3 # Number of x values suffixed to end of vector
-n_y = (len(labels_default) - n_stat) // 2
+n_y = (len(labels_default) - n_stat)
 
 # Key
-l_key_note = " * Note: A 'b' suffix means the binary version of that y-value"
-l_key = " val = Whether or not it is a valid english word to see in-game\n"+ \
+l_key=" val = 0 or 1 -> whether it is a valid english word to see in-game\n"+\
+    " dif = Inverse difficulty\n" + \
     " nrd = Negative recognition difficulty = 10 - difficulty\n" + \
     " skt = Sketchability (ease of sketching in pictionary)\n" + \
     " vis = Visuality (visual nature)\n" + \
