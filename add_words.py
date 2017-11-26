@@ -10,6 +10,8 @@ import requests
 import pandas as pd
 from bs4 import BeautifulSoup
 from selenium import webdriver
+import nltk
+from nltk.corpus import wordnet
 
 from Utils import *
 from WordRepLibrary import *
@@ -17,8 +19,11 @@ from Dataset import *
 from Constants import *
 
 
-driver = webdriver.Chrome("C:/Users/Fonz/Code/chromedriver.exe")
+# Load WordNet dictionary
+nltk.download('wordnet')
 
+# Launch Webdriver (for viewing word descriptions from a Google search)
+driver = webdriver.Chrome("C:/Users/Fonz/Code/chromedriver.exe")
 
 # Constants
 labels = labels_default
@@ -64,12 +69,17 @@ while True:
     if word not in ngrams_db.index:
         continue
 
-    # Skip word if it contains non-english characters/punctuation
+    # Skip word if it contains non-english characters/punctuation,
+    # or if the word cannot be found in the WordNet english dictionary
     skip = False
     for char in word:
         ordi = ord(char)
         if(ordi >= 127 or ordi < 33):
             print("Word \"" + word + "\" skipped (language/symbols)")
+            skip = True
+            break
+        elif(not wordnet.synsets(word)):
+            print("Word \"" + word + "\" skipped (not an English word)")
             skip = True
             break
     if skip: continue
@@ -81,27 +91,38 @@ while True:
     # Open google search page for word in Chrome
     driver.get(google_search_url + word)
 
-    # Get Y values from user
-    y = input("*** " + word + " *** " + ' '.join(labels[:-n_stat]) + " ::: ")
-    if ' ' not in y:
-        continue
-    y = y.split(' ')
+    # Until a valid input is entered, ask user for word data
+    y = None
+    while True:
+        # Get Y values from user
+        y = input("*** " + word + " *** " + ' '.join(labels[:-n_stat])+" ::: ")
+        if ' ' not in y:
+            skip = True
+            break
+        y = y.split(' ')
 
-    # Add given word if specified
-    if y[0][:5] == "WORD:":
-        word = y[0][5:]
-        if df is not None and word in list(df.index):
-            r = ''
-            while r != 'y' and r != 'n': 
-                r = input("Word already in database. Overwrite? (y/n)").lower()
-            if r == 'n':
-                continue
-        word_i, x = library.get_word(word)
-        y = y[1:]
+        # Add given word if specified
+        if y[0][:5] == "WORD:":
+            word = y[0][5:]
+            if df is not None and word in list(df.index):
+                r = ''
+                while r != 'y' and r != 'n': 
+                    r = input("Word already in database. " + \
+                              "Overwrite? (y/n)").lower()
+                if r == 'n':
+                    skip = True
+                    break
+            word_i, x = library.get_word(word)
+            y = y[1:]
 
-    # Convert to number types
-    y = [y_ for y_ in y if y_.replace('.','').isnumeric()]
-    y = [float(y_) for y_ in y]
+        # Convert to number types
+        y = [y_ for y_ in y if y_.replace('.','').isnumeric()]
+        y = [float(y_) for y_ in y]
+        if len(y) == len(Y_types):
+            break
+        print("Invalid input, please try again:")
+
+    if skip: continue
     for j in range(len(y)):
         if Y_types[j] is bool and y[j] != 0.0 and y[j] != 1.0:
             print("Word not added (non binary encountered)")

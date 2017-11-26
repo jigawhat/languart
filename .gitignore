@@ -1,11 +1,13 @@
 # Data
-data/
-
+data/*
+!data/data.csv
 
 
 # Mac OS files
 .DS_Store
 ._DS_Store
+*/.DS_Store
+*/._DS_Store
 
 
 # Byte-compiled / optimized / DLL files
