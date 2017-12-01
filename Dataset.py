@@ -7,27 +7,31 @@
 
 from collections import OrderedDict
 from Utils import *
+from Constants import *
 
 
 class Dataset():
 
-    def __init__(self, path, Y_labels=None, X_labels=None):
+    def __init__(self, path, Y_labels=labels_default, X_labels=None):
         self.path = path
         self.Y_labels = Y_labels
         self.X_labels = X_labels
 
         # Import default dataset (data.csv) (will create if missing)
-        self.data_df = None
+        self.df = None
         if os.path.exists(self.path):
-            self.data_df = pd.read_csv(self.path, index_col=0)
+            self.df = pd.read_csv(self.path, index_col=0)
+
+    def save(self):
+        return self.df.to_csv(self.path)
 
     def load(self):
-        return self.data_df
+        return self.df
 
     def add_word(self, word, word_i, y, x):
 
         # If no data yet, create new dataset
-        if self.data_df is None:
+        if self.df is None:
 
             # Get column labels
             if self.Y_labels is None:
@@ -38,14 +42,14 @@ class Dataset():
 
             # Create dataset from first entry
             data = OrderedDict(zip(labels, [word, word_i] + y + x))
-            self.data_df = pd.DataFrame([data])
-            self.data_df = self.data_df.set_index(["word"])
+            self.df = pd.DataFrame([data])
+            self.df = self.df.set_index(["word"])
 
         # Else just add new entry
         else:
-            self.data_df.loc[word] = [ word_i ] + y + x
+            self.df.loc[word] = [ word_i ] + y + x
 
         # Save new csv
-        self.data_df.to_csv(self.path)
+        return self.save()
 
 

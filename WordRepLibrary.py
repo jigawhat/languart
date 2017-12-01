@@ -17,7 +17,7 @@ class WordRepLibrary(): # TODO: Create alternate version for 5GB+ libraries
         self.library = []
         self.n_words = 0
         start_time = None
-        print("Loading word representation library...")
+        print("Loading word representation library '"+path.split('/')[-1]+"'")
         with open(path, 'r', encoding="utf8") as glove_file:
             start_time = time.time()
             i = 0
@@ -45,6 +45,10 @@ class WordRepLibrary(): # TODO: Create alternate version for 5GB+ libraries
     def get_word(self, word):
         return list(self.library.keys()).index(word), \
                [float(x) for x in self.library[word]]
+
+    # Get a specific word representation if it exists
+    def get_word_if_exists(self, word):
+        return self.get_word(word) if word in self.library.keys() else None
 
     # Get a new, unseen word from the library
     def get_new_word(self, i_seen):

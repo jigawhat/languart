@@ -1,6 +1,5 @@
 # Data
-data/*
-!data/data.csv
+data/
 
 
 # Mac OS files

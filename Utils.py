@@ -12,6 +12,7 @@ from collections import OrderedDict
 import pandas as pd
 
 
+# Return whether x is within range r
 def within(x, r):
     return r[0] <= x <= r[1]
 
@@ -52,3 +53,5 @@ def save_json(obj, name):
 def load_json(name):
     with open(data_dir + name + '.json', 'r') as infile:
         return json.load(infile)
+
+

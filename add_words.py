@@ -6,28 +6,31 @@
 #
 
 
-import requests
 import pandas as pd
-from bs4 import BeautifulSoup
 from selenium import webdriver
-import nltk
-from nltk.corpus import wordnet
 
 from Utils import *
 from WordRepLibrary import *
 from Dataset import *
 from Constants import *
+from DataRequests import *
 
 
-# Load WordNet dictionary
-nltk.download('wordnet')
+# Options
+skip_google_search_viewer = False
+skip_ngram_counts = False
+skip_google_search_count = False
+
+
 
 # Launch Webdriver (for viewing word descriptions from a Google search)
-driver = webdriver.Chrome("C:/Users/Fonz/Code/chromedriver.exe")
+if not skip_google_search_viewer:
+    # driver = webdriver.Chrome("C:/Users/Fonz/Code/chromedriver.exe")
+    driver = webdriver.Chrome()
 
 # Constants
-labels = labels_default
 google_search_url = "https://www.google.co.uk/search?q="
+
 
 
 ### Initialisation ###
@@ -36,14 +39,9 @@ google_search_url = "https://www.google.co.uk/search?q="
 dataset = Dataset(data_csv, labels)
 
 # Load ngram counts database
-sys_print("\nLoading ngram counts database...")
-start_time = time.time()
-ngrams_db = pd.read_csv(ngrams_counts, index_col="word",
-                        error_bad_lines=False, encoding='utf-8')
-t = (time.time() - start_time)
-sys_print("\rLoading ngram counts database... " + \
-          str(len(list(ngrams_db.index))) + " entries")
-print("\nLoading ngram counts database took " + str(t) + " seconds.")
+ngrams_db = None
+if not skip_ngram_counts:
+    ngrams_db = load_ngram_counts()
 
 # Load word representation library
 print()
@@ -66,7 +64,8 @@ while True:
     word, word_i, x = library.get_new_word(i_seen)
 
     # Skip word if not found in Google 1gram counts
-    if word not in ngrams_db.index:
+    if not skip_ngram_counts and word not in ngrams_db.index:
+        print("Word \""+ word +"\" skipped (not found in google ngram counts)")
         continue
 
     # Skip word if it contains non-english characters/punctuation,
@@ -78,7 +77,7 @@ while True:
             print("Word \"" + word + "\" skipped (language/symbols)")
             skip = True
             break
-        elif(not wordnet.synsets(word)):
+        elif not wordnet.synsets(word):
             print("Word \"" + word + "\" skipped (not an English word)")
             skip = True
             break
@@ -89,7 +88,8 @@ while True:
     df_.to_clipboard(index=False, header=False)
 
     # Open google search page for word in Chrome
-    driver.get(google_search_url + word)
+    if not skip_google_search_viewer:
+        driver.get(google_search_url + word)
 
     # Until a valid input is entered, ask user for word data
     y = None
@@ -129,17 +129,15 @@ while True:
             continue
 
     # Add ngram word and book counts to y (easier for adding to dataset than x)
-    y += [int(y_) for y_ in list(ngrams_db.loc[word])]
+    if not skip_ngram_counts:
+        y += [int(y_) for y_ in list(ngrams_db.loc[word])]
+    else:
+        y += [-1 for i in range(len(ngc_cols))]
 
     # Add google search # of results for word (again, technically an x value)
-    r = requests.get("https://www.google.com/search", params={'q': word})
-    soup = BeautifulSoup(r.text, "lxml")
-    res = soup.find("div", {"id": "resultStats"})
-    num = res.text.split(' ')
-    num = num[0] if len(num) < 3 else num[1]
-    num = int(num.replace(',', ''))
-    if num <= 5:
-      num = 0
+    num = -1
+    if not skip_google_search_count:
+        num = google_search_count(word)
     y += [ num ]
 
     # Check we have enough data
