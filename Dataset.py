@@ -28,6 +28,7 @@ class Dataset():
     def load(self):
         return self.df
 
+    # Add new word with given library index, x and y values
     def add_word(self, word, word_i, y, x):
 
         # If no data yet, create new dataset
