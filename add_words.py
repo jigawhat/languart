@@ -112,7 +112,7 @@ while True:
                 if r == 'n':
                     skip = True
                     break
-            word_i, x = library.get_word(word)
+            word_i, x = library.get_wrepi(word)
             y = y[1:]
 
         # Convert to number types

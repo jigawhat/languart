@@ -10,28 +10,29 @@ data_dir = "data/"
 
 
 ######## Google Ngram counts data
-ngrams_data = data_dir + "ngrams/google_20120701_1grams/"
+ngrams_dir = "ngrams/"
+ngrams_data = data_dir + ngrams_dir + "google_20120701_1grams/"
 ngrams_counts = data_dir + "ngram_counts.csv"
 
 ngrams_count_period = [2000, 2020]   # (Inclusive)
 
 
 ########### Main word representation library
-word_rep_data = data_dir + "word_reps/glove.6B/glove.6B.300d.txt"
-# word_rep_data = data_dir + "word_reps/"
+word_rep_dir = "word_reps/"
+word_rep_data = data_dir + word_rep_dir + "glove.6B/glove.6B.300d.txt"
 
 # Additional word representation libraries (for add_word_reps.py)
 lib_names = [
                 "g6B_50d",
                 "g6B_100d",
                 "g6B_200d",
-                # "g42B_300d",
+                "g42B_300d",
 ]
 lib_paths = [
                 "glove.6B/glove.6B.50d.txt",
                 "glove.6B/glove.6B.100d.txt",
                 "glove.6B/glove.6B.200d.txt",
-                # "glove.42B.300d/glove.42B.300d.txt",
+                "glove.42B.300d.txt",
 ]
 
 

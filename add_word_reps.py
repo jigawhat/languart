@@ -4,6 +4,10 @@
  # specified in Constants.py
 
 
+# TODO: make (a version of?) this script load each library and add
+# representations in series rather than in parallel, to save on RAM
+
+
 import pandas as pd
 from copy import deepcopy
 
@@ -14,7 +18,7 @@ from Constants import *
 
 
 # Add path prefixes
-lib_paths = [data_dir + "word_reps/" + path for path in lib_paths]
+lib_paths = [data_dir + word_rep_dir + path for path in lib_paths]
 
 # Load existing dataset (script wont work if none exists)
 dataset = Dataset(data_csv)
@@ -25,7 +29,7 @@ libs = [ WordRepLibrary(path) for path in lib_paths ]
 
 # Get new column names (for adding new data to dataframe)
 new_cols = sum([[lib_names[i] + "_" + str(j)
-    for j in range(len(list(libs[i].library.values())[0]))] for i in
+    for j in range(libs[i].library.shape[1])] for i in
     range(len(libs))], [])
 
 # Add placeholder data columns to dataframe
@@ -33,6 +37,7 @@ for col in new_cols:
     df[col] = None
 
 old_len = df.shape[0]
+dropped_words = []
 print("Merging word representations...")
 
 # Merge word representations from current data_csv and given word
@@ -45,14 +50,15 @@ for word in deepcopy(list(df.index)):
 
     # Get word representation from each library
     for lib in libs:
-        rep = lib.get_word_if_exists(word)
-        # If the word doesn't appear in all libraries, destroy entry)
+        rep = lib.get_wrepi_if_exists(word)
+        # If the word doesn't appear in all libraries, destroy entry
         if rep is None:
             destroy = True
             break
         combo_rep += rep[1]
 
     if destroy:
+        dropped_words += [ word ]
         df.drop(word, inplace=True)
         continue
 
@@ -66,5 +72,6 @@ new_len = df.shape[0]
 print("Finished combining word representations")
 print("Old dataset entries: " + str(old_len))
 print("New dataset entries: " + str(new_len))
+print("Dropped words (" + str(old_len - new_len) + "): " + str(dropped_words))
 
 
