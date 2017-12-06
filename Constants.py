@@ -13,7 +13,6 @@ data_dir = "data/"
 ngrams_dir = "ngrams/"
 ngrams_data = data_dir + ngrams_dir + "google_20120701_1grams/"
 ngrams_counts = data_dir + "ngram_counts.csv"
-
 ngrams_count_period = [2000, 2020]   # (Inclusive)
 
 
@@ -34,6 +33,7 @@ lib_paths = [
                 "glove.6B/glove.6B.200d.txt",
                 "glove.42B.300d.txt",
 ]
+lib_paths = [data_dir + word_rep_dir + path for path in lib_paths]
 
 
 ########## Main working dataset

@@ -63,8 +63,8 @@ class WordRepLibrary(): # TODO: Fix code to display load time remaining
     def get_wrepi_if_exists(self, word):
         return self.get_wrepi(word) if word in self.library.index else None
 
-    # Get a new, unseen word from the library
-    def get_new_word(self, i_seen):
+    # Get a new, random unseen word from the library
+    def get_new_word(self, i_seen=None):
 
         # Get a random word (index) to add (that we haven't added yet)
         word_i = None

@@ -17,9 +17,6 @@ from Dataset import *
 from Constants import *
 
 
-# Add path prefixes
-lib_paths = [data_dir + word_rep_dir + path for path in lib_paths]
-
 # Load existing dataset (script wont work if none exists)
 dataset = Dataset(data_csv)
 df = dataset.load()
