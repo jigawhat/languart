@@ -54,7 +54,7 @@ library = WordRepLibrary(word_rep_data)
 print("\n *** Ready to add new words to dataset ***")
 print(" *** Enter the random word characteristics (space-separated) or\n" + \
       "     enter a specific word by typing \"WORD:example 1 3.5 7 ...\"")
-print('\n' + '\n'.join(l_key.split('\n')[:n_y]) + '\n')
+print('\n' + '\n'.join(l_key.split('\n')[:n_def_labels]) + '\n')
 
 while True:
 

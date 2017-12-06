@@ -43,14 +43,16 @@ data_csv = data_dir + "data.csv"
 combined_csv = data_dir + "data_combi.csv"
 
 # Fields data types information
+# X_labels_default = ['x' + str(i) for i in range(300)]
+X_labels_default = ["g42B_300d" + '_' + str(i) for i in range(300)]
+Y_labels_default = ['inc', 'dif', 'nrd', 'skt', 'vis', 'phy', 'obj', 'com']
 ngc_cols = ['ngc', 'nbc']   # Ngram counts - total and book count
 gsc_col = 'gsc'             # Google search results count
-labels_default = \
-    ['inc', 'dif', 'nrd', 'skt', 'vis', 'phy',
-     'obj', 'com'] + ngc_cols + [gsc_col]
+X_labels_default += ngc_cols + [gsc_col]
+labels_default = Y_labels_default + ngc_cols + [gsc_col]
 Y_types = [bool, float, float, float, float, float, float, float]
 n_stat = 3 # Number of x values suffixed to end of vector
-n_y = (len(labels_default) - n_stat)
+n_def_labels = (len(labels_default) - n_stat)
 
 # Key
 l_key=" inc = 0/1 = whether word should be included at all in ideal game\n"+\
