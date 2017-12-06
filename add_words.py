@@ -48,7 +48,6 @@ print()
 library = WordRepLibrary(word_rep_data)
 
 
-
 ### Add new words ###
 
 print("\n *** Ready to add new words to dataset ***")
@@ -70,18 +69,7 @@ while True:
 
     # Skip word if it contains non-english characters/punctuation,
     # or if the word cannot be found in the WordNet english dictionary
-    skip = False
-    for char in word:
-        ordi = ord(char)
-        if(ordi >= 127 or ordi < 33):
-            print("Word \"" + word + "\" skipped (language/symbols)")
-            skip = True
-            break
-        elif not wordnet.synsets(word):
-            print("Word \"" + word + "\" skipped (not an English word)")
-            skip = True
-            break
-    if skip: continue
+    if not valid_word(word): continue
 
     # Send word to clipboard
     df_ = pd.DataFrame([word])

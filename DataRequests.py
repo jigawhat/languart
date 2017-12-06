@@ -17,6 +17,21 @@ from Constants import *
 nltk.download('wordnet')
 
 
+# Function to check word is valid english
+def valid_word(word, verbose=True):
+    for char in word:
+        ordi = ord(char)
+        if(ordi >= 127 or ordi < 33):
+            if verbose:
+                print("Word \"" + word + "\" skipped (language/symbols)")
+            return False
+    if not wordnet.synsets(word):
+        if verbose:
+            print("Word \"" + word + "\" skipped (not an English word)")
+        return False
+    return True
+
+
 # Function to return number of Google search results of given query string
 def google_search_count(query):
     r = requests.get("https://www.google.com/search", params={'q': query})

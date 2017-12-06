@@ -11,7 +11,7 @@ import numpy as np
 from Utils import *
 
 
-class WordRepLibrary(): # TODO: Fix code to display load time remaining
+class WordRepLibrary():
 
     # Import the word representation library (GLoVe)
     def __init__(self, path):
@@ -19,29 +19,6 @@ class WordRepLibrary(): # TODO: Fix code to display load time remaining
         start_time = time.time()
         self.library = pd.read_table(path, header=None, sep=' ',
                 encoding="utf8", index_col=0, quoting=csv.QUOTE_NONE)
-
-        # self.library = []
-        # self.n_words = 0
-        # with open(path, 'r', encoding="utf8") as glove_file:
-        #     i = 0
-        #     self.n_words = len([None for line in glove_file])
-        #     glove_file.seek(0, 0)
-        #     for line in glove_file:
-        #         tokens = line[:-1].split(' ')
-        #         self.library += [ (tokens[0], tokens[1:]) ]
-        #         i += 1
-        #         if i % 10000 == 0 or i == self.n_words:
-        #             pc = round(100.0 * (float(i) / float(self.n_words)), 2)
-        #             fr = float(self.n_words - i) / float(i)
-        #             tr = (time.time() - start_time) * fr
-        #             tr = (str(round(tr / 60, 2)) + ' minute' if tr > 120 \
-        #               else str(round(tr, 2)) + ' second') + "s remaining)   "
-        #             sys_print("\rLoaded words: " + str(i) + " / " + \
-        #                    str(self.n_words) + " (" + str(pc) + "%, " + tr)
-
-        # print("\nConverting word library into OrderedDict...")
-        # self.library = OrderedDict(self.library)
-
         t = (time.time() - start_time)
         print("Loading word representation library took "+str(t)+" seconds.\n")
         self.n_words = self.library.shape[0]
