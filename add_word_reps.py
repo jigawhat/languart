@@ -66,7 +66,7 @@ for word in deepcopy(list(df.index)):
     df.loc[word, new_cols] = combo_rep
 
 # Save new dataframe to combined dataset csv file
-df.to_csv(data_dir + combined_csv)
+df.to_csv(combined_csv)
 
 new_len = df.shape[0]
 print("Finished combining word representations")

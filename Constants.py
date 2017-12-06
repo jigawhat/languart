@@ -40,20 +40,20 @@ lib_paths = [
 data_csv = data_dir + "data.csv"
 
 # Name of combined word representation data_csv created by add_word_reps.py
-combined_csv = "data_combi.csv"
+combined_csv = data_dir + "data_combi.csv"
 
 # Fields data types information
 ngc_cols = ['ngc', 'nbc']   # Ngram counts - total and book count
 gsc_col = 'gsc'             # Google search results count
 labels_default = \
-    ['val', 'dif', 'nrd', 'skt', 'vis', 'phy',
+    ['inc', 'dif', 'nrd', 'skt', 'vis', 'phy',
      'obj', 'com'] + ngc_cols + [gsc_col]
 Y_types = [bool, float, float, float, float, float, float, float]
 n_stat = 3 # Number of x values suffixed to end of vector
 n_y = (len(labels_default) - n_stat)
 
 # Key
-l_key=" val = 0 or 1 -> whether it is a valid english word to see in-game\n"+\
+l_key=" inc = 0/1 = whether word should be included at all in ideal game\n"+\
     " dif = Inverse difficulty\n" + \
     " nrd = Negative recognition difficulty = 10 - difficulty\n" + \
     " skt = Sketchability (ease of sketching in pictionary)\n" + \
