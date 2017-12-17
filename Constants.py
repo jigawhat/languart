@@ -42,17 +42,23 @@ data_csv = data_dir + "data.csv"
 # Name of combined word representation data_csv created by add_word_reps.py
 combined_csv = data_dir + "data_combi.csv"
 
+learning_data_dir = "learning_data/"   # Saved intermediate learning data
+
 # Fields data types information
-# X_labels_default = ['x' + str(i) for i in range(300)]
-X_labels_default = ["g42B_300d" + '_' + str(i) for i in range(300)]
-Y_labels_default = ['inc', 'dif', 'nrd', 'skt', 'vis', 'phy', 'obj', 'com']
+Y_labels_de = ['inc', 'dif', 'nrd', 'skt', 'vis', 'phy', 'obj', 'com']
+# X_labels_de = ['x' + str(i) for i in range(300)]
+X_labels_de = ["g42B_300d" + '_' + str(i) for i in range(300)]
+X_labels_de = ["x" + str(n) for n in range(10 ** 3)] + \
+    sum([[l + str(n) for n in range(10 ** 3)] for l in lib_names], [])
+
+
 ngc_cols = ['ngc', 'nbc']   # Ngram counts - total and book count
 gsc_col = 'gsc'             # Google search results count
-X_labels_default += ngc_cols + [gsc_col]
-labels_default = Y_labels_default + ngc_cols + [gsc_col]
+X_labels_de += ngc_cols + [gsc_col]
+labels_de = Y_labels_de + ngc_cols + [gsc_col]
 Y_types = [bool, float, float, float, float, float, float, float]
 n_stat = 3 # Number of x values suffixed to end of vector
-n_def_labels = (len(labels_default) - n_stat)
+n_def_labels = (len(labels_de) - n_stat)
 
 # Key
 l_key=" inc = 0/1 = whether word should be included at all in ideal game\n"+\

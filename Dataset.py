@@ -12,7 +12,7 @@ from Constants import *
 
 class Dataset():
 
-    def __init__(self, path, Y_labels=labels_default, X_labels=None):
+    def __init__(self, path, Y_labels=labels_de, X_labels=None):
         self.path = path
         self.Y_labels = Y_labels
         self.X_labels = X_labels

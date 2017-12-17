@@ -26,6 +26,10 @@ pp = pprint.PrettyPrinter(indent=4)
 def pr(obj):
     pp.pprint(obj)
 
+# Format an iterable of numbers for printing
+def fm_nums(iterable, round_n):
+    return [float("{:,}".format(round(n, round_n))) for n in iterable]
+
 # Create folder, optionally overwriting existing folder
 def create_folder(path, overwrite=False):
     if(os.path.isdir(path)):
