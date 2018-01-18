@@ -31,8 +31,8 @@ def multitask_scorer(sfunc, y_t, y_p):
 def multitask_acc(y_t, y_p):
     return multitask_scorer(accuracy_score, y_t, y_p)
 
-def mean_relative_error(y_true, y_pred):
-    return mean_absolute_error(y_true, y_pred) / y_true
+def mean_relative_error(y_true, y_pred, **kwargs):
+    return mean_absolute_error(y_true, y_pred, **kwargs) / y_true
 
 # Define models to evaluate
 models_c = [
