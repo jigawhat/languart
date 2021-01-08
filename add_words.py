@@ -36,7 +36,7 @@ google_search_url = "https://www.google.co.uk/search?q="
 ### Initialisation ###
 
 # Load existing dataset/create new
-dataset = Dataset(data_csv, labels)
+dataset = Dataset(data_csv, labels_de)
 
 # Load ngram counts database
 ngrams_db = None
@@ -83,7 +83,8 @@ while True:
     y = None
     while True:
         # Get Y values from user
-        y = input("*** " + word + " *** " + ' '.join(labels[:-n_stat])+" ::: ")
+        y = input(
+            "*** " + word + " *** " + ' '.join(labels_de[:-n_stat])+" ::: ")
         if ' ' not in y:
             skip = True
             break
@@ -130,7 +131,7 @@ while True:
 
     # Check we have enough data
     print(y)
-    if len(y) < len(labels):
+    if len(y) < len(labels_de):
         print("Word not added (not enough Y data given)")
         continue
 

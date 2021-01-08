@@ -8,71 +8,92 @@
 
 import time
 import glob
+import numpy as np
+
 from Utils import *
 from Constants import *
+from WordValidation import *
 
-
-total_count_est = 18559155
 
 proj_root = os.getcwd()
-ngrams_csv = proj_root + '/' + ngrams_counts
+ngrams_csv_path = proj_root + '/' + ngrams_csv_precomp
 
 os.chdir(ngrams_data)
 files = glob.glob('*')
-new_db = not os.path.exists(ngrams_csv)
+new_db = not os.path.exists(ngrams_csv_path)
 
-i = 0
-cur_word, cur_pc, cur_bc = None, None, None # Current word, page and book count
+i, total_count = 0, 0
 
 print("Loading word ngram files...")
 start_time = time.time()
 
+print("Counting number of 1grams...")
+total_1grams = 59480430  # Precomputed for 2020 Google 1grams
+#total_1grams = sum([sum(1 for _ in open(f, encoding='utf-8')) for f in files])
+print("Number of 1grams: " + str(total_1grams))
 
-def add_line(word, year, count, book_c, ngram_counts_csv_file):
-    global i, new_db, start_time, total_count_est, cur_word, cur_pc, cur_bc
+
+def add_word(w, entries, out):
+    global i, total_count, new_db, start_time, total_1grams
     
-    count, book_c = int(count), int(book_c)
-    word = word.split('_')[0]
-    if ',' in word:
-        if word[-1] != ',':
-            return
-        word = word[:-1]
-    word = word.lower()
+    word_type = "?"
+    w = w.strip()
+    if '_' in w:
+        w = w.split('_')
+        if w[-1] != '': word_type = w[-1]
+        w = w[0]
+    if w in allowed_words_countonly:
+        w = w.replace('.', '')
+    w_root = w.replace('-', '').lower()
 
-    if word == cur_word:
-        cur_pc += count
-        cur_bc += book_c
-    else:
-        if i > 0:
-            if new_db:
-                ngram_counts_csv_file.write("word,count,book_c\n")
-                new_db = False
-            z = ','.join([str(x) for x in [cur_word, cur_pc, cur_bc]]) + '\n'
-            ngram_counts_csv_file.write(z)
+    entries = [e.split(',') for e in entries]
+    ys = np.asarray([float(y) for (y, _, _) in entries])
+    ns = np.asarray([float(n) for (_, n, _) in entries])
+    nb = np.asarray([float(n) for (_, _, n) in entries])
+    min_, max_ = min(ys), max(ys)
+    total, total_b = sum(ns), sum(nb)
+    zipd = list(zip(ys, ns))
+    mean = round(sum((y * float(n)) for (y, n) in zipd) / total, 3)
+    mode = ys[(len(ys) - 1) - np.argmax(ns[::-1])] if max(ns) > 1 else mean
+    total, total_b = int(total), int(total_b)
+    last5  = int(sum([n for (y, n) in zipd if y >= last5_min]))
+    last10 = int(sum([n for (y, n) in zipd if y >= last10_min]))
+    last20 = int(sum([n for (y, n) in zipd if y >= last20_min]))
 
-        cur_word, cur_pc, cur_bc = word, count, book_c
-        i += 1
-        if i % 10000 == 0 or i == total_count_est:
-            pc = round(100.0 * (float(i) / float(total_count_est)), 2)
-            fr = float(total_count_est - i) / float(i)
-            tr = (time.time() - start_time) * fr
-            tr = (str(round(tr / 60, 2)) + ' minute' if tr > 120 \
-                  else str(round(tr, 2)) + ' second') + "s remaining)      "
-            sys_print("\rLoaded word ngrams: " + str(i) + " / " + \
-                   str(total_count_est) + " (" + str(pc) + "%, " + tr)
+    if new_db:
+        out.write("word,root,type," + \
+                  "total,total_b,mean,mode,min,max,last5,last10,last20\n")
+        new_db = False
+    z = ','.join([str(x) for x in [w, w_root, word_type, total, total_b, \
+        mean, mode, min_, max_, last5, last10, last20]]) + '\n'
+    out.write(z)
+
+    total_count += 1
+    if i > 0 and i % 10000 == 0 or i == total_1grams:
+        pc = round(100.0 * (float(i) / float(total_1grams)), 2)
+        fr = float(total_1grams - i) / float(i)
+        tr = (time.time() - start_time) * fr
+        tr = (str(round(tr / 60, 2)) + ' minute' if tr > 120 \
+              else str(round(tr, 2)) + ' second') + "s remaining)      "
+        sys_print("\rLoaded word ngrams: " + str(total_count) + \
+            ' (from ' + str(i) + " 1grams) / " + \
+            str(total_1grams) + " (" + str(pc) + "%, " + tr)
 
 
-with open(ngrams_csv, 'a', encoding='utf-8') as ng_csv:
+with open(ngrams_csv_path, 'a', encoding='utf-8') as ng_csv:
     for f in files:
         with open(f, 'r', encoding='utf-8') as ngram_file:
             for line in ngram_file:
-                word, year, count, book_c = line.split('\t')
-                year = int(year)
-                if within(year, ngrams_count_period):
-                    add_line(word, year, count, book_c, ng_csv)
+                entries = line.split('\t')
+                w, max_year = entries[0], int(entries[-1].split(',')[0])
+                min_year = int(entries[1].split(',')[0])
+                if valid_word(strh(w, '_'), min_year) and \
+                  within(max_year, ngrams_count_period):
+                    add_word(w, entries[1:], ng_csv)
+                i += 1
 
 
-print("\nn words: " + str(i))
+print("\nn words: " + str(total_count))
 t = (time.time() - start_time)
 print("Done. Counting ngrams took " + str(round(t / 60, 2)) + " minutes.\n")
 

@@ -10,15 +10,22 @@ data_dir = "data/"
 
 
 ######## Google Ngram counts data
-ngrams_dir = "ngrams/"
-ngrams_data = data_dir + ngrams_dir + "google_20120701_1grams/"
-ngrams_counts = data_dir + "ngram_counts.csv"
-ngrams_count_period = [2000, 2020]   # (Inclusive)
+ngrams_dir = "H:\\Code/ngrams/"
+# ngrams_dir = data_dir + "ngrams/"
+ngrams_data = ngrams_dir + "google_20200217_1grams/"
+# ngrams_data = ngrams_dir + "google_20120701_1grams/"
+ngrams_csv = data_dir + "ngram_counts.csv"
+ngrams_csv_precomp = data_dir + "ngram_counts_precomp.csv"
+last5_min = 2015
+last10_min = 2010
+last20_min = 2000
+ngrams_count_period = [2000, 2050]   # (words must have occured in this period)
 
 
 ########### Main word representation library
 word_rep_dir = "word_reps/"
-word_rep_data = data_dir + word_rep_dir + "glove.6B/glove.6B.300d.txt"
+# word_rep_data = data_dir + word_rep_dir + "glove.6B/glove.6B.300d.txt"
+word_rep_data = data_dir + word_rep_dir + "glove.840B/glove.840B.300d.txt"
 
 # Additional word representation libraries (for add_word_reps.py)
 lib_names = [
@@ -51,8 +58,9 @@ X_labels_de = ["g42B_300d" + '_' + str(i) for i in range(300)]
 X_labels_de = ["x" + str(n) for n in range(10 ** 3)] + \
     sum([[l + str(n) for n in range(10 ** 3)] for l in lib_names], [])
 
-
-ngc_cols = ['ngc', 'nbc']   # Ngram counts - total and book count
+# Ngram counts - total and book count, year stats and recent counts
+ngc_cols = ['ngc', 'nbc', 'mean', 'mean_mode', 'mode_mode',
+            'min', 'max', 'last5', 'last10', 'last20']
 gsc_col = 'gsc'             # Google search results count
 X_labels_de += ngc_cols + [gsc_col]
 labels_de = Y_labels_de + ngc_cols + [gsc_col]

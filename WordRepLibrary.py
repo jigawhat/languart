@@ -8,6 +8,7 @@
 import csv
 import time
 import numpy as np
+
 from Utils import *
 
 
@@ -17,11 +18,12 @@ class WordRepLibrary():
     def __init__(self, path):
         print("Loading word representation library '"+path.split('/')[-1]+"'")
         start_time = time.time()
-        self.library = pd.read_table(path, header=None, sep=' ',
-                encoding="utf8", index_col=0, quoting=csv.QUOTE_NONE)
+        self.library = pd.read_table(path,header=None, sep=' ',encoding="utf8",
+            index_col=0, quoting=csv.QUOTE_NONE, keep_default_na=False)
         t = (time.time() - start_time)
         print("Loading word representation library took "+str(t)+" seconds.\n")
         self.n_words = self.library.shape[0]
+        self.ci_vocab = None
 
     # Get a specific word representation by integer count index
     def get_wrep_by_int(self, i):
@@ -39,6 +41,17 @@ class WordRepLibrary():
     # Get a specific word representation and it's index if it exists
     def get_wrepi_if_exists(self, word):
         return self.get_wrepi(word) if word in self.library.index else None
+
+    # Check if a word exists in the library
+    def get_exists(self, word):
+        return word in self.library.index
+
+    # Same but ignoring case (assumes word is lowercase already)
+    def get_exists_ci(self, word):
+        if self.ci_vocab is None:
+            print("Case-insensitive vocabulary for representation library...")
+            self.ci_vocab = set([w.lower() for w in self.library.index])
+        return word in self.ci_vocab
 
     # Get a new, random unseen word from the library
     def get_new_word(self, i_seen=None):

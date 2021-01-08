@@ -5,6 +5,7 @@
 import time
 import requests
 import pandas as pd
+from selenium import webdriver
 from bs4 import BeautifulSoup
 import nltk
 from nltk.corpus import wordnet
@@ -33,21 +34,38 @@ def valid_word(word, verbose=True):
 
 
 # Function to return number of Google search results of given query string
-def google_search_count(query):
-    r = requests.get("https://www.google.com/search", params={'q': query})
-    soup = BeautifulSoup(r.text, "lxml")
-    res = soup.find("div", {"id": "resultStats"})
-    res = res.text.split(' ')
-    res = res[0] if len(res) < 3 else res[1]
-    res = int(res.replace(',', ''))
-    return res if res > 5 else 0
+def google_search_count(query, driver=None):
+    URL     = "https://www.google.com/search?q=" + query
+    new_driver = False
+    if driver is None:
+        new_driver = True
+        driver = webdriver.Chrome()
+    success = False
+    while not success:
+        try:
+            driver.get(URL)
+            src = driver.page_source
+            soup = BeautifulSoup(src, 'lxml')
+            total_results_text = soup.find("div",
+                {"id": "result-stats"}).find(text=True, recursive=False)
+            res = ''.join([num for num in total_results_text if num.isdigit()])
+            success = True
+        except Exception as e:
+            pr_exception(e)
+            print("Press Enter to continue, " + \
+                "once captcha or other issue is resolved...")
+            input()
+    if new_driver:
+        driver.close()
+    print(res)
+    return int(res)
 
 
-# Load ngram counts csv into pandas dataframe
+# Load ngram counts tsv into pandas dataframe
 def load_ngram_counts():
     sys_print("\nLoading ngram counts database...")
     start_time = time.time()
-    ngrams_db = pd.read_csv(ngrams_counts, index_col="word",
+    ngrams_db = pd.read_csv(ngrams_csv, index_col="word",
                             error_bad_lines=False, encoding='utf-8')
     t = (time.time() - start_time)
     sys_print("\rLoading ngram counts database... " + \

@@ -8,13 +8,36 @@ import os
 import sys
 import shutil
 import pprint
+import traceback
 from collections import OrderedDict
 import pandas as pd
 
 
+# Return the first index of a substring s
+def strind(w, s):
+    try:
+        return w.index(s)
+    except:
+        return None
+
+# Return the head of a string split by separator sep
+def strh(s, sep):
+    return s[:strind(s, sep)]
+
 # Return whether x is within range r
 def within(x, r):
     return r[0] <= x <= r[1]
+
+# Get the current time as a timestamp
+def get_curr_ts():
+    return pd.Timestamp.now().timestamp()
+
+# Print an exception's usual output, formatted correctly
+def pr_exception(e):
+    for line in traceback.format_tb(e.__traceback__):
+        pr_fl(line)
+    pr_fl(type(e))
+    pr_fl(e)
 
 # Print directly using standard output
 def sys_print(obj):
