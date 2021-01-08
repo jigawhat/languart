@@ -1,5 +1,7 @@
 # Data
 data/
+!data/data.csv
+!data/examples.txt
 
 
 # Mac OS files
