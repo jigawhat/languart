@@ -5,6 +5,7 @@
 '''
 
 import os
+import gc
 import sys
 import shutil
 import pprint
@@ -19,6 +20,10 @@ def strind(w, s):
         return w.index(s)
     except:
         return None
+
+# Default word root algorithm
+def word_root(s):
+    return s.lower().replace('-', '')
 
 # Return the head of a string split by separator sep
 def strh(s, sep):
@@ -35,9 +40,9 @@ def get_curr_ts():
 # Print an exception's usual output, formatted correctly
 def pr_exception(e):
     for line in traceback.format_tb(e.__traceback__):
-        pr_fl(line)
-    pr_fl(type(e))
-    pr_fl(e)
+        sys_print(line)
+    sys_print(type(e))
+    sys_print(e)
 
 # Print directly using standard output
 def sys_print(obj):

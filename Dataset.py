@@ -47,9 +47,6 @@ class Dataset():
             f.write(str(int(get_curr_ts())))
     print('\nComplete')
 
-    # Refresh the 1gram counts using the ngrams data
-    
-
     # Add new word with given library index, x and y valuez
     def add_word(self, word, word_i, y, x):
 
@@ -61,16 +58,16 @@ class Dataset():
                 self.Y_labels = ['y' + str(i) for i in range(len(y))]
             if self.X_labels is None:
                 self.X_labels = ['x' + str(i) for i in range(len(x))]
-            labels = ["word", "lib_i"] + self.Y_labels + self.X_labels
+            labels = ["word"] + self.Y_labels + ["lib_i"] + self.X_labels
 
             # Create dataset from first entry
-            data = OrderedDict(zip(labels, [word, word_i] + y + x))
+            data = OrderedDict(zip(labels, [word] + y + [word_i] + x))
             self.df = pd.DataFrame([data])
             self.df = self.df.set_index(["word"])
 
         # Else just add new entry
         else:
-            self.df.loc[word] = [ word_i ] + y + x
+            self.df.loc[word] = y + [word_i] + x
 
         # Save new csv
         return self.save()

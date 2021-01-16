@@ -44,7 +44,7 @@ def add_word(w, entries, out):
         w = w[0]
     if w in allowed_words_countonly:
         w = w.replace('.', '')
-    w_root = w.replace('-', '').lower()
+    w_root = word_root(w)
 
     entries = [e.split(',') for e in entries]
     ys = np.asarray([float(y) for (y, _, _) in entries])

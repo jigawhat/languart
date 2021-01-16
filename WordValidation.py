@@ -26,7 +26,7 @@ library = WordRepLibrary(word_rep_data)  # From common crawl pre-2012
 library2 = WordRepLibrary(words_27B)     # From Twitter pre-2012
 
 # Assuming new terms are rare and therefore efficient to include here
-def valid_word(w, min_year):
+def valid_word(w, min_year=0):
     if len(w) < 1: return False
     if w[0] == '-' or w[-1] == '-': return False
     w_lower = w.lower()

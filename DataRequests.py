@@ -19,7 +19,7 @@ nltk.download('wordnet')
 
 
 # Function to check word is valid english
-def valid_word(word, verbose=True):
+def valid_english(word, verbose=True):
     for char in word:
         ordi = ord(char)
         if(ordi >= 127 or ordi < 33):
@@ -48,7 +48,9 @@ def google_search_count(query, driver=None):
             soup = BeautifulSoup(src, 'lxml')
             total_results_text = soup.find("div",
                 {"id": "result-stats"}).find(text=True, recursive=False)
+            print(total_results_text)
             res = ''.join([num for num in total_results_text if num.isdigit()])
+            print(res)
             success = True
         except Exception as e:
             pr_exception(e)
@@ -66,7 +68,8 @@ def load_ngram_counts():
     sys_print("\nLoading ngram counts database...")
     start_time = time.time()
     ngrams_db = pd.read_csv(ngrams_csv, index_col="word",
-                            error_bad_lines=False, encoding='utf-8')
+        error_bad_lines=False, keep_default_na=False, encoding='utf-8',
+        dtype={k: str for k in ngc_cols})
     t = (time.time() - start_time)
     sys_print("\rLoading ngram counts database... " + \
               str(len(list(ngrams_db.index))) + " entries")

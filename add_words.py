@@ -14,18 +14,19 @@ from WordRepLibrary import *
 from Dataset import *
 from Constants import *
 from DataRequests import *
+from WordValidation import *
 
 
 # Options
 skip_google_search_viewer = False
 skip_ngram_counts = False
 skip_google_search_count = False
+add_to_clipboard = False
 
 
 
 # Launch Webdriver (for viewing word descriptions from a Google search)
 if not skip_google_search_viewer:
-    # driver = webdriver.Chrome("C:/Users/Fonz/Code/chromedriver.exe")
     driver = webdriver.Chrome()
 
 # Constants
@@ -42,10 +43,11 @@ dataset = Dataset(data_csv, labels_de)
 ngrams_db = None
 if not skip_ngram_counts:
     ngrams_db = load_ngram_counts()
+library.import_autocorrect_1grams(ngrams_db)
 
-# Load word representation library
-print()
-library = WordRepLibrary(word_rep_data)
+# Load word representation library (already loaded by WordValidation)
+# print()
+# library = WordRepLibrary(word_rep_data)
 
 
 ### Add new words ###
@@ -53,14 +55,14 @@ library = WordRepLibrary(word_rep_data)
 print("\n *** Ready to add new words to dataset ***")
 print(" *** Enter the random word characteristics (space-separated) or\n" + \
       "     enter a specific word by typing \"WORD:example 1 3.5 7 ...\"")
-print('\n' + '\n'.join(l_key.split('\n')[:n_def_labels]) + '\n')
+print('\n' + '\n'.join(l_key.split('\n')[:n_de_Y_labels]) + '\n')
 
 while True:
 
     df = dataset.load()
     i_seen = None if df is None else list(df["lib_i"])
 
-    word, word_i, x = library.get_new_word(i_seen)
+    word, word_i, x = library.get_new_word(i_seen, autocorrect_caps=True)
 
     # Skip word if not found in Google 1gram counts
     if not skip_ngram_counts and word not in ngrams_db.index:
@@ -69,26 +71,28 @@ while True:
 
     # Skip word if it contains non-english characters/punctuation,
     # or if the word cannot be found in the WordNet english dictionary
-    if not valid_word(word): continue
+    if not valid_english(word):
+        print("Word \""+ word +"\" skipped (not valid English)")
+        continue
+    if not valid_word(word):
+        print("Skipping invalid word: " + word)
+        continue
 
     # Send word to clipboard
-    df_ = pd.DataFrame([word])
-    df_.to_clipboard(index=False, header=False)
-
-    # Open google search page for word in Chrome
-    if not skip_google_search_viewer:
-        driver.get(google_search_url + word)
+    if add_to_clipboard:
+        df_ = pd.DataFrame([word])
+        df_.to_clipboard(index=False, header=False)
 
     # Until a valid input is entered, ask user for word data
-    y = None
+    y, skip = None, False
     while True:
         # Get Y values from user
         y = input(
-            "*** " + word + " *** " + ' '.join(labels_de[:-n_stat])+" ::: ")
-        if ' ' not in y:
+            "*** " + word + " *** " + ' '.join(labels_de[:-n_stat]) + " ::: ")
+        if ' ' not in y and '\t' not in y:
             skip = True
             break
-        y = y.split(' ')
+        y = y.split()
 
         # Add given word if specified
         if y[0][:5] == "WORD:":
@@ -102,10 +106,12 @@ while True:
                     skip = True
                     break
             word_i, x = library.get_wrepi(word)
+            if (not skip_ngram_counts) and word not in ngrams_db.index:
+                word = library.autocorrect_word(word)
             y = y[1:]
 
         # Convert to number types
-        y = [y_ for y_ in y if y_.replace('.','').isnumeric()]
+        y = [y_ for y_ in y if y_.replace('.', '').isnumeric()]
         y = [float(y_) for y_ in y]
         if len(y) == len(Y_types):
             break
@@ -119,7 +125,9 @@ while True:
 
     # Add ngram word and book counts to y (easier for adding to dataset than x)
     if not skip_ngram_counts:
-        y += [int(y_) for y_ in list(ngrams_db.loc[word])]
+        entry = list(ngrams_db.loc[word])
+        y += [str(round(float(y_), 3))[:8] if (float(y_) - int(float(y_))) > \
+            1e-5 else round(float(y_), 3) for y_ in entry[1:]] + entry[:1]
     else:
         y += [-1 for i in range(len(ngc_cols))]
 

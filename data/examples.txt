@@ -13,7 +13,7 @@ hydrogen, carbon, oxygen, nitrogen, gold, helium, silicon, iron, aluminium, copp
 
 types of microorganisms         microorganisms
 A list of types of microorganisms       A list of well-known types of microorganism
-bacteria, virtus, prokaryote, eukaryote, spore, fungi, protein, lipid, egg, cell, coronavirus, DNA, mitochondria, red blood cell, pollen, protozoa, yeast, archaea, tardigrade, micro-animal, nematode, flu virus, mite, enzyme, plasmid, rotifer, loricifera, copepod, cladocera
+bacteria, virtus, prokaryote, eukaryote, spore, fungi, protein, lipid, egg, cell, coronavirus, DNA, mitochondria, red blood cell, erythrocyte, ribosome, pollen, protozoa, yeast, archaea, tardigrade, micro-animal, nematode, flu virus, mite, enzyme, plasmid, rotifer, loricifera, copepod, cladocera
 
 types of music                  genres of music                 music description               music related
 A long list of genres of music                  A list of different types of music              A list of words that describe music
