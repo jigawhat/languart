@@ -16,46 +16,61 @@ ngrams_data = ngrams_dir + "google_20200217_1grams/"
 # ngrams_data = ngrams_dir + "google_20120701_1grams/"
 ngrams_csv = data_dir + "ngram_counts.csv"
 ngrams_csv_precomp = data_dir + "ngram_counts_precomp.csv"
+listset_txt = data_dir + "examples.txt"
 last5_min = 2015
 last10_min = 2010
 last20_min = 2000
 ngrams_count_period = [2000, 2050]   # (words must have occured in this period)
-
 
 ########### Main word representation library
 word_rep_dir = "word_reps/"
 # word_rep_data = data_dir + word_rep_dir + "glove.6B/glove.6B.300d.txt"
 word_rep_data = data_dir + word_rep_dir + "glove.840B/glove.840B.300d.txt"
 
-# Additional word representation libraries (for add_word_reps.py)
-lib_names = [
-                "g6B_50d",
-                "g6B_100d",
-                "g6B_200d",
-                "g42B_300d",
-]
-lib_paths = [
-                "glove.6B/glove.6B.50d.txt",
-                "glove.6B/glove.6B.100d.txt",
-                "glove.6B/glove.6B.200d.txt",
-                "glove.42B.300d.txt",
-]
-lib_paths = [data_dir + word_rep_dir + path for path in lib_paths]
-
-
 ########## Main working dataset
-data_csv = data_dir + "data.csv"
-
-# Name of combined word representation data_csv created by add_word_reps.py
-combined_csv = data_dir + "data_combi.csv"
-
+data_csv = data_dir + "data.tsv"
 learning_data_dir = "learning_data/"   # Saved intermediate learning data
 
-# Part of speech tagset for google ngrams (frequency and % in comment)
+lprompts = [  # If includes "types of" we use the singular (non-plural) phrase
+    ("A list of", ""),
+    ("A long list of", ""),
+    ("An exhaustive list of", ""),
+    ("A list of types of ", ""),
+    ("Different", ""),
+    ("A list of different", ""),
+    ("A list of different types of", ""),
+    ("A long list of different", ""),
+    ("A long list of different types of", ""),
+    ("An exhaustive list of different", ""),
+    ("An exhaustive list of different types of", ""),
+    ("Well-known", ""),
+    ("A list of well-known", ""),
+    ("A list of well-known types of", ""),
+    ("A long list of well-known", ""),
+    ("A long list of well-known types of", ""),
+    ("An exhaustive list of well-known", ""),
+    ("An exhaustive list of well-known types of", ""),
+    ("Common", ""),
+    ("A list of common", ""),
+    ("A list of common types of", ""),
+    ("A long list of common", ""),
+    ("A long list of common types of", ""),
+    ("An exhaustive list of common", ""),
+    ("An exhaustive list of common types of", ""),
+    ("Some", ""),
+    ("A list of some", ""),
+    ("A list of some types of", ""),
+    ("A long list of some", ""),
+    ("A long list of some types of", ""),
+    ("An exhaustive list of some", ""),
+    ("An exhaustive list of some types of", ""),
+] 
+
+# Part of speech tagset for Google ngrams (frequency and % in comment)
 # Note: the frequency data is somewhat unprocessed
 pos_tags = [
-    "X",       #   4562969893          (   0.15%   )
-    "NUM",     # 10359909952           (   0.33%   )
+    # "X",     #   4562969893          (   0.15%   )  # ( Other - disabled )
+    # "NUM",   #   10359909952         (   0.33%   )  # ( Number - disabled )
     "PRT",     # 45361608405           (   1.45%   )
     "CONJ",    #    60763767404        (   1.95%   )
     "ADV",     # 71401527469           (   2.29%   )
@@ -70,16 +85,14 @@ pos_tags = [
 # Fields data types information
 Y_labels_de = ['inc', 'dif', 'nrd', 'skt', 'vis', 'phy',
                'obj', 'com', 'spl', 'grp', 'edu', 'nym']
-# X_labels_de = ['x' + str(i) for i in range(300)]
-X_labels_de = ["g42B_300d" + '_' + str(i) for i in range(300)]
-X_labels_de = ["x" + str(n) for n in range(10 ** 3)] + \
-    sum([[l + str(n) for n in range(10 ** 3)] for l in lib_names], [])
+X_rep_ls = ['x' + str(i) for i in range(300)]
+# X_rep_ls = ["g42B_300d" + '_' + str(i) for i in range(300)]
 
 # Ngram counts - total and book count, year stats and recent counts
 ngc_cols = ['ngc', 'nbc', 'mean', 'mean_mode', 'mode_mode',
             'min', 'max', 'last5', 'last10', 'last20', 'type']
 gsc_col = 'gsc'             # Google search results count
-X_labels_de += ngc_cols + [gsc_col]
+X_labels_de = X_rep_ls + ngc_cols + [gsc_col]
 labels_de = Y_labels_de + ngc_cols + [gsc_col]
 Y_types = [float for _ in Y_labels_de]
 n_stat = len(ngc_cols) + 1  # Number of x values suffixed to end of vector
@@ -87,7 +100,7 @@ n_de_Y_labels = (len(labels_de) - n_stat)  # Number of default Y labels
 
 # Key
 l_key = \
-    " inc = Whether word should be included at all in it's ideal game\n" + \
+    " inc = Probability word should be included at all in its ideal game\n" + \
     " dif = Inverse difficulty (general intuitive comb of skt, spl & IQ)\n" + \
     " nrd = Recognisability / Inverse recognition difficulty\n" + \
     " skt = Sketchability (ease of sketching in pictionary)\n" + \
@@ -113,4 +126,26 @@ l_key = \
     " gsc = Google search results count\n" + \
     ""
 
+
+
+# Additional word representation libraries (for add_word_reps.py)
+# lib_names = [
+#                 "g6B_50d",
+#                 "g6B_100d",
+#                 "g6B_200d",
+#                 "g42B_300d",
+# ]
+# lib_paths = [
+#                 "glove.6B/glove.6B.50d.txt",
+#                 "glove.6B/glove.6B.100d.txt",
+#                 "glove.6B/glove.6B.200d.txt",
+#                 "glove.42B.300d.txt",
+# ]
+# lib_paths = [data_dir + word_rep_dir + path for path in lib_paths]
+
+# # Name of combined word representation data_csv created by add_word_reps.py
+# combined_csv = data_dir + "data_combi.csv"
+
+# X_labels_de = ["x" + str(n) for n in range(10 ** 3)] + \
+#     sum([[l + str(n) for n in range(10 ** 3)] for l in lib_names], [])
 

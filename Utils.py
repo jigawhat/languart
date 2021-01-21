@@ -23,7 +23,7 @@ def strind(w, s):
 
 # Default word root algorithm
 def word_root(s):
-    return s.lower().replace('-', '')
+    return s.lower().replace('-', '').replace(' ', '')
 
 # Return the head of a string split by separator sep
 def strh(s, sep):

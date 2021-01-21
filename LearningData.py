@@ -14,7 +14,7 @@ from DataRequests import *
 from WordRepLibrary import *
 
 
-def load_data(Y_labels=Y_labels_de, X_labels=X_labels_de, data=combined_csv):
+def load_data(Y_labels=Y_labels_de, X_labels=X_labels_de, data=data_csv):
     dataset = Dataset(data)
     df = dataset.load()
     X_labels = [l for l in X_labels if l in df.columns]

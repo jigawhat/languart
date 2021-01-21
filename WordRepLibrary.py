@@ -35,10 +35,10 @@ class WordRepLibrary():
         return list(self.library.loc[word])
 
     # Get a specific word representation and it's index
-    def get_wrepi(self, word, ignore_case_if_missing=True):
-        if ignore_case_if_missing and word not in self.library.index:
-            word = self.autocorrect_word(word)
-        return self.library.index.get_loc(word), self.get_wrep(word)
+    def get_wrepi(self, w, ignore_case_if_missing=True):
+        if ignore_case_if_missing and w not in self.library.index:
+            w = self.autocorrect_word(w)
+        return self.library.index.get_loc(w), self.get_wrep(w)
 
     # Autocorrect a word to match a word in this library
     def autocorrect_word(self, word):

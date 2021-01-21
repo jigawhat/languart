@@ -48,9 +48,7 @@ def google_search_count(query, driver=None):
             soup = BeautifulSoup(src, 'lxml')
             total_results_text = soup.find("div",
                 {"id": "result-stats"}).find(text=True, recursive=False)
-            print(total_results_text)
             res = ''.join([num for num in total_results_text if num.isdigit()])
-            print(res)
             success = True
         except Exception as e:
             pr_exception(e)
@@ -59,7 +57,6 @@ def google_search_count(query, driver=None):
             input()
     if new_driver:
         driver.close()
-    print(res)
     return int(res)
 
 

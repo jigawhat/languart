@@ -1,6 +1,7 @@
 # Data
 data/
-!data/data.csv
+!data/data.tsv
+!data/no_autocorrect.tsv
 !data/examples.txt
 
 
