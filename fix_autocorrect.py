@@ -20,7 +20,7 @@ from DataRequests import *
 driver = webdriver.Chrome()
 
 # Load existing dataset/create new
-dataset = Dataset(data_csv, labels_de)
+dataset = Wordset()
 df = dataset.load()
 
 # Load ngram counts database

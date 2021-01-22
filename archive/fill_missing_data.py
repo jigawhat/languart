@@ -14,7 +14,7 @@ from DataRequests import *
 
 
 # Load current dataset
-data = Dataset(data_csv)
+data = Wordset()
 
 # Load ngram counts database
 ngrams_db = load_ngram_counts()

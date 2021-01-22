@@ -1,5 +1,6 @@
 # Data
 data/
+models/
 !data/data.tsv
 !data/no_autocorrect.tsv
 !data/examples.txt

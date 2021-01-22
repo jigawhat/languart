@@ -13,9 +13,34 @@ from Constants import *
 from DataRequests import *
 
 
-class Dataset():
+class Listset():
 
-    def __init__(self, path, Y_labels=labels_de, X_labels=None):
+    def __init__(self, path=listset_txt):
+        self.path = path
+        self.cats, self.cats_sing, self.phrases = None, None, None
+
+    def load(self):
+        cats, cats_sing, phrases = [], [], []
+        i = 0
+        with open(listset_txt, 'r') as f:
+            line = f.readline()
+            while line != '':
+                line = line.strip()
+                if i % 3 == 0:
+                    cats_, cats_s_ = line.split('|')
+                    cats.append([w.strip() for w in cats_.split('\t')])
+                    cats_sing.append([w.strip() for w in cats_s_.split('\t')])
+                elif i % 3 == 1:
+                    phrases.append([w.strip() for w in line.split(',')])
+                i += 1
+                line = f.readline()
+        self.cats, self.cats_sing, self.phrases = cats, cats_sing, phrases
+        return cats, cats_sing, phrases
+
+
+class Wordset():
+
+    def __init__(self, path=data_csv, Y_labels=labels_de, X_labels=None):
         self.path = path
         self.Y_labels = Y_labels
         self.X_labels = X_labels
@@ -86,14 +111,3 @@ class Dataset():
 
         # Save new csv
         return self.save()
-
-
-class Listset():
-
-    def __init__(self, path):
-        self.path = path
-
-    def load(self):
-        cats, words = [], []
-        with open(listset_txt, 'r') as f:
-            

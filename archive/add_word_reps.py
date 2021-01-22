@@ -18,7 +18,7 @@ from Constants import *
 
 
 # Load existing dataset (script wont work if none exists)
-dataset = Dataset(data_csv)
+dataset = Wordset()
 df = dataset.load()
 
 # Load new word representation libraries (may take a while)

@@ -34,7 +34,7 @@ google_search_url = "https://www.google.co.uk/search?q="
 ### Initialisation ###
 
 # Load existing dataset/create new
-dataset = Dataset(data_csv, labels_de)
+dataset = Wordset()
 
 # Load ngram counts database
 ngrams_db = None
