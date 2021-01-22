@@ -31,6 +31,50 @@ word_rep_data = data_dir + word_rep_dir + "glove.840B/glove.840B.300d.txt"
 data_csv = data_dir + "data.tsv"
 learning_data_dir = "learning_data/"   # Saved intermediate learning data
 
+# Fields data types information
+Y_labels_de = ['inc', 'dif', 'nrd', 'skt', 'vis', 'phy',
+               'obj', 'com', 'spl', 'grp', 'edu', 'nym']
+X_rep_ls = ['x' + str(i) for i in range(300)]
+# X_rep_ls = ["g42B_300d" + '_' + str(i) for i in range(300)]
+
+# Ngram counts - total and book count, year stats and recent counts
+ngc_cols = ['ngc', 'nbc', 'mean', 'mean_mode', 'mode_mode',
+            'min', 'max', 'last5', 'last10', 'last20', 'type']
+gsc_col = 'gsc'             # Google search results count
+X_labels_de = X_rep_ls + ngc_cols + [gsc_col]
+labels_de = Y_labels_de + ngc_cols + [gsc_col]
+Y_types = [float for _ in Y_labels_de]
+n_stat = len(ngc_cols) + 1  # Number of x values suffixed to end of vector
+n_de_Y_labels = (len(labels_de) - n_stat)  # Number of default Y labels
+
+# Key
+l_key = \
+    " inc = Probability word should be included at all in its ideal game\n" + \
+    " dif = Inverse difficulty (general intuitive comb of skt, spl & IQ)\n" + \
+    " nrd = Recognisability / Inverse recognition difficulty\n" + \
+    " skt = Sketchability (ease of sketching in pictionary)\n" + \
+    " vis = Visuality (visual nature)\n" + \
+    " phy = Physicality (physical nature)\n" + \
+    " obj = Objectness (whether or not it is an object)\n" + \
+    " com = Commonality (well-known-ness among younger age groups)\n" + \
+    " spl = Specialisation level (depth of domain knowledge required)\n" + \
+    " grp = Groupness (a single individual = 0, a domain of life = 10)\n" + \
+    " edu = Degree of inclusion in curriculum or academia generally\n" + \
+    " nym = Degree of homonymity (numbwe of extra meanings * 3, cap 10)\n" + \
+    " type = Most common part of speech tag for word in Google ngrams\n" + \
+    " ngc = (Google) books corpus Ngram book count\n" + \
+    " nbc = (Google) books corpus Ngram book count\n" + \
+    " mean = Mean year of occurrence in Google ngrams \n" + \
+    " mean_mode = Mean of cap. variants' mode of year of occurrence\n" + \
+    " mode_mode = Mode of cap. variants' mode of year of occurrence\n" + \
+    " min = Oldest year of occurrence\n" + \
+    " max = Youngest year of occurrence\n" + \
+    " last5 = Number of occurrences in the past 5 years\n" + \
+    " last10 = Number of occurrences in the past 10 years\n" + \
+    " last20 = Number of occurrences in the past 20 years\n" + \
+    " gsc = Google search results count\n" + \
+    ""
+
 lprompts = [  # If includes "types of" we use the singular (non-plural) phrase
     "A list of",
     "A long list of",
@@ -81,50 +125,6 @@ pos_tags = [
     "VERB",    #    249754507701       (   8.00%   )
     "NOUN",    #   1559809008954       (   16.42%  )
 ]
-
-# Fields data types information
-Y_labels_de = ['inc', 'dif', 'nrd', 'skt', 'vis', 'phy',
-               'obj', 'com', 'spl', 'grp', 'edu', 'nym']
-X_rep_ls = ['x' + str(i) for i in range(300)]
-# X_rep_ls = ["g42B_300d" + '_' + str(i) for i in range(300)]
-
-# Ngram counts - total and book count, year stats and recent counts
-ngc_cols = ['ngc', 'nbc', 'mean', 'mean_mode', 'mode_mode',
-            'min', 'max', 'last5', 'last10', 'last20', 'type']
-gsc_col = 'gsc'             # Google search results count
-X_labels_de = X_rep_ls + ngc_cols + [gsc_col]
-labels_de = Y_labels_de + ngc_cols + [gsc_col]
-Y_types = [float for _ in Y_labels_de]
-n_stat = len(ngc_cols) + 1  # Number of x values suffixed to end of vector
-n_de_Y_labels = (len(labels_de) - n_stat)  # Number of default Y labels
-
-# Key
-l_key = \
-    " inc = Probability word should be included at all in its ideal game\n" + \
-    " dif = Inverse difficulty (general intuitive comb of skt, spl & IQ)\n" + \
-    " nrd = Recognisability / Inverse recognition difficulty\n" + \
-    " skt = Sketchability (ease of sketching in pictionary)\n" + \
-    " vis = Visuality (visual nature)\n" + \
-    " phy = Physicality (physical nature)\n" + \
-    " obj = Objectness (whether or not it is an object)\n" + \
-    " com = Commonality (well-known-ness among younger age groups)\n" + \
-    " spl = Specialisation level (depth of domain knowledge required)\n" + \
-    " grp = Groupness (a single individual = 0, a domain of life = 10)\n" + \
-    " edu = Degree of inclusion in curriculum or academia generally\n" + \
-    " nym = Degree of homonymity (numbwe of extra meanings * 3, cap 10)\n" + \
-    " type = Most common part of speech tag for word in Google ngrams\n" + \
-    " ngc = (Google) books corpus Ngram book count\n" + \
-    " nbc = (Google) books corpus Ngram book count\n" + \
-    " mean = Mean year of occurrence in Google ngrams \n" + \
-    " mean_mode = Mean of cap. variants' mode of year of occurrence\n" + \
-    " mode_mode = Mode of cap. variants' mode of year of occurrence\n" + \
-    " min = Oldest year of occurrence\n" + \
-    " max = Youngest year of occurrence\n" + \
-    " last5 = Number of occurrences in the past 5 years\n" + \
-    " last10 = Number of occurrences in the past 10 years\n" + \
-    " last20 = Number of occurrences in the past 20 years\n" + \
-    " gsc = Google search results count\n" + \
-    ""
 
 
 
