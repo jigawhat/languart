@@ -10,7 +10,6 @@ from collections import defaultdict
 from Constants import *
 from Utils import *
 from Dataset import *
-from DataRequests import *
 from WordRepLibrary import *
 
 
