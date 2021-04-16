@@ -3,7 +3,13 @@
 #
 #  Shared constants for project
 #
-
+from memory_profiler import profile
+@profile(precision=4)
+def func(n):
+   return sum(range(n))
+@profile(precision=4)
+def func2(n):
+   return sum(list(range(n)))
 
 ######## Data folder
 data_dir = "data/"
@@ -60,8 +66,7 @@ l_key = \
     " spl = Specialisation level (depth of domain knowledge required)\n" + \
     " grp = Groupness (a single individual = 0, a domain of life = 10)\n" + \
     " edu = Degree of inclusion in curriculum or academia generally\n" + \
-    " nym = Degree of homonymity (numbwe of extra meanings * 3, cap 10)\n" + \
-    " type = Most common part of speech tag for word in Google ngrams\n" + \
+    " nym = Degree of homonymity (number of extra meanings * 3, cap 10)\n" + \
     " ngc = (Google) books corpus Ngram book count\n" + \
     " nbc = (Google) books corpus Ngram book count\n" + \
     " mean = Mean year of occurrence in Google ngrams \n" + \
@@ -72,6 +77,7 @@ l_key = \
     " last5 = Number of occurrences in the past 5 years\n" + \
     " last10 = Number of occurrences in the past 10 years\n" + \
     " last20 = Number of occurrences in the past 20 years\n" + \
+    " type = Most common part of speech tag for word in Google ngrams\n" + \
     " gsc = Google search results count\n" + \
     ""
 
