@@ -1,0 +1,4 @@
+selenium==3.141.0
+transformers==4.5.1
+pytorch-transformers==1.2.0
+memory-profiler==0.58.0
