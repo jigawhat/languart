@@ -26,11 +26,11 @@ class Listset():
             line = f.readline()
             while line != '':
                 line = line.strip()
-                if i % 3 == 0:
+                if i % 4 == 1:
                     cats_, cats_s_ = line.split('|')
                     cats.append([w.strip() for w in cats_.split('\t')])
                     cats_sing.append([w.strip() for w in cats_s_.split('\t')])
-                elif i % 3 == 1:
+                elif i % 4 == 2:
                     phrases.append([w.strip() for w in line.split(',')])
                 i += 1
                 line = f.readline()
