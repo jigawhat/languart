@@ -22,7 +22,7 @@ class Listset():
     def load(self):
         cats, cats_sing, phrases = [], [], []
         i = 0
-        with open(listset_txt, 'r') as f:
+        with open(listset_txt, 'r', encoding='utf-8') as f:
             line = f.readline()
             while line != '':
                 line = line.strip()
