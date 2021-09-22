@@ -55,9 +55,9 @@ def pr_exception(e):
     sys_print(e)
 
 # Print directly using standard output
-def sys_print(obj):
+def sys_print(obj, flush=True):
     sys.stdout.write(str(obj))
-    sys.stdout.flush()
+    if flush: sys.stdout.flush()
 
 # Print dictionaries (etc) in a human readable way
 pp = pprint.PrettyPrinter(indent=4)
