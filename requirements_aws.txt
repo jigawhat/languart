@@ -1,4 +1,12 @@
-selenium==3.141.0
-transformers==4.5.1
-pytorch-transformers==1.2.0
 memory-profiler==0.58.0
+joblib==0.17.0
+jsonlines==2.0.0
+bayesian-optimization==1.2.0
+pyenchant==3.2.1
+beautifulsoup4==4.9.3
+lxml==4.6.3
+selenium==3.141.0
+torch==1.8.1
+transformers==4.11.2
+pytorch-transformers==1.2.0
+openai==0.10.4
