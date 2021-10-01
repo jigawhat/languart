@@ -4,7 +4,8 @@ models/
 !data/data.tsv
 !data/no_autocorrect.tsv
 !data/examples.txt
-
+!data/learning_data/msp_samples_nb/*
+!data/learning_data/msp_samples_nb_test/*
 
 # Mac OS files
 .DS_Store
