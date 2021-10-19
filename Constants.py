@@ -85,7 +85,7 @@ lprompts = [  # If includes "types of" we use the singular (non-plural) phrase
     "A list of",
     "A long list of",
     "An exhaustive list of",
-    "A list of types of ",
+    "A list of types of",
     "Different",
     "A list of different",
     "A list of different types of",
