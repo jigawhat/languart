@@ -1,4 +1,4 @@
-# CaveArtist
-better version of skribbl.io
+# LanguArt
+The phrase generator behind the upcoming game, conceptionar.io
 
 
