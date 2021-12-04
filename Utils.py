@@ -43,6 +43,10 @@ def strh(s, sep):
 def within(x, r):
     return r[0] <= x <= r[1]
 
+# Return whether x is approximately equal to y
+def approx_eq(x, y, tol=1e-7):
+    return abs(x - y) < tol
+
 # Get the current time as a timestamp
 def get_curr_ts():
     return pd.Timestamp.now().timestamp()
