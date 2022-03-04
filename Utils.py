@@ -12,6 +12,7 @@ import pprint
 import traceback
 from collections import OrderedDict
 import pandas as pd
+import numpy as np
 
 
 def find_free_port():
@@ -42,6 +43,9 @@ def strh(s, sep):
 # Return whether x is within range r
 def within(x, r):
     return r[0] <= x <= r[1]
+
+def arr(iterable):
+    return np.asarray(iterable)
 
 # Return whether x is approximately equal to y
 def approx_eq(x, y, tol=1e-7):
