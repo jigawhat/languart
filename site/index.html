@@ -190,8 +190,9 @@ function receive_new_phrase(data){
         if (new_phr.slice(0, 4) == "and " || new_phr.slice(0, 4) == "And ") {
             new_phr = new_phr.slice(4, new_phr.length);
         }
+        // Check if new phrase respone is valid (not a newline or in existing list)
         if (new_phr.indexOf('\n') > -1 || full_phraselist.indexOf(new_phr) > -1 || 
-            full_phraselist.indexOf('the ' + new_phr) > -1 || full_phraselist.indexOf('The ' + new_phr) > -1) {
+            full_phraselist.indexOf('the ' + new_phr) > -1 || full_phraselist.indexOf('The ' + new_phr) > -1 || new_phr == "so on" || new_phr == "and so on" || new_phr == 'etc') {
             n_attempts += 1;
             if (n_attempts < MAX_ATTEMPTS_SCOPED) {
                 request_new_phrase();
