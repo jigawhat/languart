@@ -1,0 +1,211 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>languart - for all your list needs</title>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body {
+    font-family: Lucida Console, sans-serif;
+    padding: 0;
+    margin: 0;
+    border: 0;
+}
+#console_area {
+    widtb: 500px;
+}
+</style>
+
+<script src="http://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+<body>
+<center>
+<a href="TheObserverParadoxParadox.pdf">Quantum Physics Publications</a>
+<br />
+<br />
+<br />
+<br />
+<br />
+<h2 style="letter-spacing: 15px;">langu<span style="color:blue">art</span></h2>
+<br />
+<span style="font-size: 14px;">for all your list needs</span>
+<br />
+<br />
+<br />
+<div id="console_area"><textarea id="playground" placeholder="round fruits: apple, orange, nectarine," value="" rows="8" cols="70"></textarea> <div><button id="generate_button" style="font-family: Lucida Console, sans-serif;">generate</button></div><div> </div></div>
+</center>
+<script>
+range = function( min, max, rand ) {
+  var arr = ( new Array( ++max - min ) )
+    .join('.').split('.')
+    .map(function( v,i ){ return min + i })
+  return rand
+    ? arr.map(function( v ) { return [ Math.random(), v ] })
+       .sort().map(function( v ) { return v[ 1 ] })
+    : arr
+}
+function shuffleArray(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+}
+const example_cats = [
+    "machine learning algorithms",
+    "biological examples of math in nature",
+    "non-biological examples of math in nature",
+    "scientific principles behind rain showers",
+    "interpersonal tokens that confer trust",
+    "digital security tokens",
+    "vehicles that have travelled in space",
+    "things which can be fogged",
+    "types of leniency",
+    "things which can be said to ignite",
+    "examples of precipied beauty",
+    "sources of noise",
+    "actions which contribute to the gathering of dust",
+    "effects which cannot be predicted prior to their occurrence",
+    "counterposed discourse",
+]
+const example_phrs = [
+    ["Gaussian process", "decision tree", "neural network", "perceptron", "random forest", "linear regression", "mixture model", "Gaussian mixture model", "GMM", "matrix factorization", "Restricted Boltzmann Machine", "RBM", "deep learning", "Support Vector Machine", "SVM", "Long Short-Term Memory", "LSTM", "convolutional neural network", "CNN", "recurrent neural network", "RNN", "transformer", "attention", "multi-head attention", "residual connections", "dropout", "batch normalisation", "GAN", "generative adversarial network", "LDA", "latent Dirichlet allocation", "HMM", "hidden Markov model", "GloVe", "word2vec", "ELMo", "DeepDream", "variational autoencoder", "logistic regression", "fastText", "k nearest neighbours", "k means", "AdaBoost", "belief network", "graphical model", "genetic algorithm", "autoencoder", "inception", "monte carlo", "gradient descent", "spiking neural network", "image segmentation", "U-Net", "ReLU", "softmax", "Expectation–maximization", "density estimation", "inverse entailment", "inductive logic programming", "computer vision", "reinforcement learning", "recommender system", "facial recognition", "emotion recognition", "upsampling", "super resolution", "inverse reinforcement learning", "temporal difference learning", "optimal control", "active learning", "neural Turing machine", "missing data imputation", "time series", "multivariate time series", "graph embedding", "latent variable model", "hidden variable model", "graphical model", "Bayesian network", "Markov random field", "Markov chain", "belief propagation", "variational Bayes", "EM", "expectation maximization", "importance sampling", "Gibbs Sampling", "Metropolis–Hastings", "MCMC", "Markov Chain Monte Carlo", "Bayesian inference", "Bayesian filtering", "Bayesian learning", "Bayesian classification", "Naive Bayes", "Bayes' theorem", "maximum a posteriori estimation", "MAP", "conjugate prior", "message passing", "hierarchical Bayesian model", "hierarchical Bayesian model", "hierarchical Dirichlet process", "nonparametric Bayesian model", "Hamiltonian Monte Carlo",],
+    ["pine cone", "flower petals", "sunflower seeds", "pineapple seeds", "shell", "seashell", "fern", "tree", "tree branches", "branches", "neuron", "bee hive", "honeycomb", "tree ring", "starfish", "sea star", "web", "spider web", "dna", "spots", "stripes", "brain", "fairy ring", "fairy circle", "aloe", "concentric circles", "symmetry", "rotational symmetry", "nautilus", "nautilus shell", "leaf", "mollusc shell", "dendrite", "slime mold", "cortex", "embryo", "butterfly", "butterfly wings", "peacock", "peacock feathers", "ecosystem", "equilibrium", "resilience", "evolution", "butterfly effect", "roman cauliflower", "Romanesco", "Romanesco broccoli", "capsid", "ram's horn", "cell division", "whorl", "hair whorl", "phyllotaxis", "morphogenesis", "game theory", "phototropism", "fly eye", "protein folding", "flower", "double helix", "snail", "snail shell", "hexagon", "hexagonal lattice", "conch", "conch shell", "tree of life",],
+    ["star", "planet", "vortex", "sand dunes", "bubble", "soap bubble", "fibonacci", "meandering", "cellular automata", "vortex street", "ripple", "foam", "hurricane", "helix", "tessellation", "tiling", "cracks", "orbit", "trajectory", "flight", "gravity", "galaxy", "spiral galaxy", "fractal", "spiral", "eclipse", "volcano", "mountain", "moon", "snowflake", "droplet", "crystal", "lattice", "crystal lattice", "Lichtenberg figure", "wave", "concentric circles", "symmetry", "rotational symmetry", "golden ratio", "solar system", "fir waves", "tiger bush", "geometry", "equilibrium", "twinkling", "scintillation", "chaos theory", "soap film", "minimal surface", "milky way", "turbulence", "raindrop", "whirlpool", "cyclone", "spiral arms", "sphere", "geodesic dome", "butterfly effect", "swirl", "whorl", "bell curve", "convergence", "divergence", "magnetism", "salt crystal", "L-system", "Lindenmayer system", "dragon curve", "fractal plant", "Barnsley fern", "game theory", "diamond", "quartz", "entropy", "erosion", "weathering", "bifurcation", "parabola", "water drop", "lever", "bismuth", "pyrite", "coastline paradox", "resonance", "fluid dynamics", "ice crystal", "ice crystals", "rainbow", "black hole", "golden spiral", "platonic solid", "fractal mountain", "self-similarity", "water wave", "buckyball", "fullerene", "infinity", "surface tension", "fractal flame", "reflection", "mirror", "hexagon", "hexagonal lattice", "cycloid", "brachistochrone curve", "caustics", "catenoid", "catenary", "catenary curve", "Archimedean spiral", "arithmetic spiral", "quasicrystal", "crescent moon", "laminar flow", "fractal basin of attraction", "desert rose", "desert rose crystal", "hyperbola", "tides",],
+    ["precipitation", "gravity", "evaporation", "condensation", "crystalisation", "nucleation", "temperature", "pressure", "humidity", "relative humidity", "dew point", "the water cycle", "coalescence", "warm rain process", "terminal velocity", "cold rain process", "vapor pressure", "convection", "air saturation", "formation of raindrops", "hydrometeors", "thermodynamics", "adiabatic cooling", "water vapor pressure",],
+    ["token of goodwill", "apology", "diplomatic gift", "gift basket", "present", "handshake", "greeting", "blessing", "thanks", "offering", "pledge", "oath", "vow", "kiss", "peace treaty", "peace offering", "peace pact", "token of friendship", "token of appreciation", "token of respect", "token of gratitude", "token of love", "engagement ring", "wedding ring", "ring", "love letter", "parting gift", "welcome gift", "letter of recommendation", "reference letter",],
+    ["Secure Hash Algorithm", "secure access signature", "security token", "password", "JSON Web Token", "client certificate", "transport layer security", "secure sockets layer", "handshake", "certificate", "public key", "public key certificate", "digital certificate", "RSA", "key exchange", "shared secret", "private key", "key pair", "key agreement", "symmetric key", "cipher", "Kerberos", "single sign-on", "credentials", "passcode", "face ID", "facial recognition", "touch ID", "fingerprint scan", "authentication", "biometric authentication", "multi-factor authentication", "two-factor authentication", "location-based authentication", "mutual authentication", "passphrase", "encryption", "plaintext", "ciphertext", "cryptographic key", "security token", "electronic key", "smart key", "forward secrecy", "session key", "forward anonymity", "identity management", "software token", "personal identification number", "PIN number", "soft token", "one-time password", "block cipher", "stream cipher", "pre-shared key", "ephemeral key", "traffic encryption key", "multicast key", "content encryption key", "benign key", "authentication key", "benign key", "BLACK key", "digital rights management key", "derived key", "FIREFLY key", "key encryption key", "key production key", "master key", "RED key", "seed key", "poem key", "paper key", "crypto ignition key", "semantic security", "secure multi-party computation", "oblivious transfer", "zero-knowledge proof", "hash", "secure hash", "hash code", "checksum", "cryptographic hash function", "hash chain", "key wrap", "encryption algorithm", "message-digest algorithm", "digital signature", "prime number", "industrial-grade prime number", "certified prime number", "software taggant", "code signature", "code signing certificate",],
+    ["Falcon 9", "Discovery", "Dragon", "Cygnus", "Progress", "Soyuz", "Curiosity", "Challenger", "IKAROS", "Mercury", "Gemini", "Skylab", "Mir", "Apollo", "Space Shuttle", "International Space Station", "Sputnik", "Pioneer", "Luna", "Voyager", "Galileo", "Pathfinder", "Atlantis", "Deep Impact", "Viking", "Opportunity", "Spirit", "Orion", "Mariner", "Chandra", "Kepler", "Juno", "Rosetta", "Vostok", "Beagle", "Columbia", "Endeavour", "Surveyor", "Ingenuity", "Venera", "Shoemaker", "Spitzer", "Hubble", "Syncom", "Clementine", "Chang'e", "Chandrayaan", "Cassini", "New Horizons", "Perseverance", "Vega", "Cluster", "Deep Space", "Genesis", "STEREO", "Hayabusa", "Helios", "WMAP", "Ariane", "Centaur", "Atlas", "Titan", "Electron", "Proton", "Thor", "Falcon Heavy", "Long March", "Delta", "Ceres", "Molniya", "X-15", "X-37", "SpaceShipOne", "SpaceShipTwo", "Antares", "Taurus", "Vanguard", "Buran", "BOR", "Messenger", "Phoenix", "InSight", "Hiten", "Celestial Maiden", "Phobos", "Huygens",],
+    ["windscreen", "window", "road", "sky", "weather conditions", "the future", "hangover", "memories", "eyeglasses", "glasses", "bathroom window", "bathroom", "shower", "shower window", "mirror", "bathroom mirror", "phone screen", "valley", "field", "atmosphere", "perception", "vision", "sight", "eyesight", "watch", "screen", "stage", "auditorium", "theatre", "cinema", "tint", "lens", "sunglasses", "mind", "sea", "space", "room", "weather", "video title screen", "breath", "vent", "exhaust", "storm", "snowstorm", "blizzard", "window pane", "glass", "bus window", "car window", "sauna", "steam room", "hot tub", "mountain", "emotions", "highway", "runway", "coast", "bay", "dock", "pier", "seashore", "horizon", "street", "scope", "telescope", "headlights", "floodlight", "street lamp", "lamppost", "light pole", "alley", "alleyway", "hot spring", "mountain peak", "beam of light", "club", "nightclub", "light show", "laser", "theatre", "stadium", "ceiling", "disco", "discothèque", "dance floor",],
+    ["extension", "pardon", "predisposition", "favour", "favouritism", "mercy", "tolerance", "clemency", "nepotism", "bias", "preference", "in-group preference", "ethnocentrism", "affirmative action", "teacher’s pet", "preferential treatment", "forgiveness", "moderation", "sympathy", "charity", "permission", "allowance", "lesser punishment", "lazyness", "laxness", "negligence", "irresponsibility", "leeway", "Methods of extraction (chemistry", "search and rescue", "military/special operations", "math", "etc): helicopter", "plane", "rocketship", "escape pod", "truck", "armoured vehicle", "rescue ship", "lifeboat", "speedboat", "water plane", "helipad", "runway", "stretcher", "ambulance", "van", "rope", "ladder", "rope ladder", "tweezers", "pliers", "plunger", "plug chain", "spoon", "fork", "chopsticks", "digestion", "siphon", "embezzlement", "sucking", "suction", "straw", "condensation tube", "distillation", "squeeze", "search and rescue", "hostage rescue", "press", "juicer", "blender", "hand press", "lemon squeezer", "zester", "extractor fan", "dehumidifier", "air purifier", "tap", "hypodermic needle", "pipette", "mesh", "filter", "net", "sieve", "strainer", "boil off", "fractionation", "osmosis", "dry off", "semipermeable membrane", "capillary action", "chromatography", "bridge", "pulling", "eavesdropping", "impersonation", "coercion", "blackmail", "misdirection", "raid", "SWAT team", "Freudian slip", "tongs", "separatory funnel",],
+    ["firelighters", "sparklers", "engine", "paper", "match", "matchstick", "car ignition", "fuel", "gasoline", "love", "fire", "social movement", "passion", "desire", "star", "the big bang", "nuclear power plant", "power plant", "atom bomb", "bomb", "fuse",],
+    ["Yellowstone", "earths habitable zone", "avalanche-ready slopes of snow", "undiscovered land", "uninhabited earth-like planet", "thin ice", "runaway climate", "runaway global temperatures", "soap bubble", "bubble", "dark clouds", "snowy skies", "snow covered sloped roof", "untouched snow", "slopes of snow", "long shot", "jenga tower", "tectonic plates", "volcano vegetation", "tornado alley", "storm chasing", "extreme sport", "stunt driving", "stunt", "escapade", "skylark", "lark", "mischief", "surprise party", "antics", "prank", "monkey business",],
+    ["rain", "cosmic microwave background", "CMB", "interference", "static", "obstruction", "planes", "cars", "traffic", "fan", "wind", "discord", "image grain", "blemish",],
+    ["hoarding", "building neglect", "ignorance", "addiction", "laziness", "obsession", "long-term injury", "occupation", "workaholism", "dry skin", "shedding", "going on holiday", "unsellable property", "buy to leave", "buy to leave empty", "property investment", "real estate investment", "overstocking", "market saturation", "abandonment", "haunting", "time travel into the future", "shelving", "having dandruff", "dying alone", "hitchhiking", "disappearing", "escapading", "going into hiding", "escaping the law", "becoming a fugitive", "evacuation", "storage in shed", "storage in attic", "having too many rooms", "room neglect", "extended holiday", "larger festival turnout", "bomb sheltering", "aging population", "researching a dead end", "dead end research", "digitisation", "museum curation incompetence", "bad writing", "boring museum exhibition", "website churn", "antiques collecting", "fringe research", "lack of citation", "galactic filaments", "galaxy formation", "star formation",],
+    ["hitch", "novel behavior", "black swan event", "an unexplored love", "the distant future", "chaos theory", "a chance encounter", "serendipity", "unforeseen consequences", "quantum mechanics", "butterfly effect", "the butterfly effect", "unforeseen obstacles", "random event", "the first time you hear your favorite song", "love at first sight", "words left unsaid", "potential relationships", "the time you meet your future spouse", "the time you meet your first love", "happy accident", "a sign from the universe", "a sign from god", "coincidence", "rare opportunity", "unanticipated event", "black holes", "flash flood", "asteroid impact", "alien visitation", "theory of evolution",],
+    ["left and right wing", "yin and yang", "good and evil", "true and false", "right and wrong", "prosecution and defence", "attack and defence", "claim and rebuke", "bunk and debunk", "question and answer", "teaching and listening", "debate", "speech and applause", "ask and reply", "insult and comeback", "persuasion and concession",],
+];
+MAX_INPUT_PHRASES = 18;
+MAX_EXAMPLE_PHRASES = 5;
+MAX_ATTEMPTS_SCOPED = 7;
+MAX_ATTEMPTS = 15;
+N_cats = example_cats.length;
+var full_phraselist = [];
+var n_attempts = 0;
+$( '#generate_button' ).click(function() {
+    n_attempts = 0;
+    full_phraselist = [];
+    request_new_phrase();
+});
+function request_new_phrase(params=
+    {
+    "temperature": 0.54,
+    "top_p": 0.26,
+    "presence_penalty": 1.6,
+    "frequency_penalty": 1.9,
+    }) {
+    var text = $( '#playground' ).val();
+    text = text.trim();
+    if (text == ',' || text == '') {
+        const cat_i = Math.floor(Math.random() * N_cats);
+        text = example_cats[cat_i] + ': ';
+        const all_phrs = example_phrs[cat_i];
+        const rng = range( 0, all_phrs.length, true );
+        for (var i = 0; i < MAX_EXAMPLE_PHRASES; i++) {
+            text += all_phrs[rng[i]] + ', ';
+        }
+        text = text.trim();
+        $( '#playground' ).val(text);
+    } else if (text[text.length - 1] != ',' && text[text.length - 1] != ':') {
+        text += ',';
+        $( '#playground' ).val(text);
+    }
+    // Now extract phrases and category and randomly sample GPT3 for one more list item with an ordered subset
+    var cat = '';
+    var phrases = text.slice(0, text.length - 1);
+    const colon_ix = text.indexOf(':');
+    if (colon_ix > -1) {
+        cat = text.slice(0, colon_ix);
+        phrases = text.slice(colon_ix + 2, text.length - 1);
+    }
+    if (phrases.indexOf(',') > -1) {
+        phrases = phrases.split(', ');
+        full_phraselist = phrases.slice();
+        shuffleArray(phrases);
+        phrases = phrases.slice(0, MAX_INPUT_PHRASES);
+        phrases = phrases.join(', ');
+    }
+    // const query = "A list of " + cat + ': ' + phrases.join(', ') + ',';
+    const query = cat + ':' + (phrases.length > 0 ? ' ' + phrases + ',' : '');
+
+    $.ajaxSetup({headers: {"Content-Type": "application/json",
+                           "Authorization": "Bearer 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",
+                           "OpenAI-Organization": "org-mEpBEXHNUL2Ao22vN7orGfk0",}});
+    $.ajax({
+        url: "https://api.openai.com/v1/engines/davinci/completions",
+        data: JSON.stringify({
+            "prompt": query,
+            "temperature": params["temperature"],
+            "top_p": params["top_p"],
+            "presence_penalty": params["presence_penalty"],
+            "frequency_penalty": params["frequency_penalty"],
+            "best_of": 2,
+            "n": 1,
+            "max_tokens": 12,
+            "stop": [',', '.'],
+        }),
+        type: 'POST',
+    })
+    .done(function(data)
+    {
+        console.log('Complete response = ', data);
+        receive_new_phrase(data);
+    })
+    .fail(function(data)
+    {
+        console.log('Error: ', data);
+    });
+}
+widen_search_params = {
+    "temperature": 2.0,
+    "top_p": 1.0,
+    "presence_penalty": 0.0,
+    "frequency_penalty": 0.0,
+}
+function receive_new_phrase(data){
+    choice = data["choices"][0];
+    if (choice["finish_reason"] == "length") {
+        n_attempts += 1;
+        if (n_attempts < MAX_ATTEMPTS_SCOPED) {
+            request_new_phrase();
+        } else if (n_attempts < MAX_ATTEMPTS) {
+            request_new_phrase(widen_search_params);
+        }
+    } else {
+        var new_phr = choice["text"].trim();
+        if (new_phr.slice(0, 4) == "and " || new_phr.slice(0, 4) == "And ") {
+            new_phr = new_phr.slice(4, new_phr.length);
+        }
+        if (new_phr.indexOf('\n') > -1 || full_phraselist.indexOf(new_phr) > -1 || 
+            full_phraselist.indexOf('the ' + new_phr) > -1 || full_phraselist.indexOf('The ' + new_phr) > -1) {
+            n_attempts += 1;
+            if (n_attempts < MAX_ATTEMPTS_SCOPED) {
+                request_new_phrase();
+            } else if (n_attempts < MAX_ATTEMPTS) {
+                request_new_phrase(widen_search_params);
+            }
+        } else {
+            full_phraselist += [new_phr];
+            // console.log($( '#playground' ).val().trim() + ' ' + new_phr + ',');
+            $( '#playground' ).val($( '#playground' ).val().trim() + ' ' + new_phr + ',');
+            n_attempts = 0;
+        }
+    }
+}
+</script>
+</body>
+</html>
