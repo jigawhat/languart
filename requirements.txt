@@ -1,5 +1,5 @@
 memory-profiler==0.58.0
-joblib==0.17.0
+joblib==1.2.0
 jsonlines==2.0.0
 requests==2.25.0
 pandas==0.23.4
