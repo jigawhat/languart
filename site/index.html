@@ -23,7 +23,9 @@ body {
 </head>
 <body>
 <center>
-<a href="TheObserverParadoxParadox.pdf">Quantum Physics Publications</a>
+<br />
+<a href="asteroids.html">Asteroids Game</a>
+<!--- <a href="TheObserverParadoxParadox.pdf">Quantum Physics Publications</a> --->
 <br />
 <br />
 <br />
@@ -84,7 +86,7 @@ const example_phrs = [
     ["extension", "pardon", "predisposition", "favour", "favouritism", "mercy", "tolerance", "clemency", "nepotism", "bias", "preference", "in-group preference", "ethnocentrism", "affirmative action", "teacher’s pet", "preferential treatment", "forgiveness", "moderation", "sympathy", "charity", "permission", "allowance", "lesser punishment", "lazyness", "laxness", "negligence", "irresponsibility", "leeway", "Methods of extraction (chemistry", "search and rescue", "military/special operations", "math", "etc): helicopter", "plane", "rocketship", "escape pod", "truck", "armoured vehicle", "rescue ship", "lifeboat", "speedboat", "water plane", "helipad", "runway", "stretcher", "ambulance", "van", "rope", "ladder", "rope ladder", "tweezers", "pliers", "plunger", "plug chain", "spoon", "fork", "chopsticks", "digestion", "siphon", "embezzlement", "sucking", "suction", "straw", "condensation tube", "distillation", "squeeze", "search and rescue", "hostage rescue", "press", "juicer", "blender", "hand press", "lemon squeezer", "zester", "extractor fan", "dehumidifier", "air purifier", "tap", "hypodermic needle", "pipette", "mesh", "filter", "net", "sieve", "strainer", "boil off", "fractionation", "osmosis", "dry off", "semipermeable membrane", "capillary action", "chromatography", "bridge", "pulling", "eavesdropping", "impersonation", "coercion", "blackmail", "misdirection", "raid", "SWAT team", "Freudian slip", "tongs", "separatory funnel",],
     ["firelighters", "sparklers", "engine", "paper", "match", "matchstick", "car ignition", "fuel", "gasoline", "love", "fire", "social movement", "passion", "desire", "star", "the big bang", "nuclear power plant", "power plant", "atom bomb", "bomb", "fuse",],
     ["Yellowstone", "earths habitable zone", "avalanche-ready slopes of snow", "undiscovered land", "uninhabited earth-like planet", "thin ice", "runaway climate", "runaway global temperatures", "soap bubble", "bubble", "dark clouds", "snowy skies", "snow covered sloped roof", "untouched snow", "slopes of snow", "long shot", "jenga tower", "tectonic plates", "volcano vegetation", "tornado alley", "storm chasing", "extreme sport", "stunt driving", "stunt", "escapade", "skylark", "lark", "mischief", "surprise party", "antics", "prank", "monkey business",],
-    ["rain", "cosmic microwave background", "CMB", "interference", "static", "obstruction", "planes", "cars", "traffic", "fan", "wind", "discord", "image grain", "blemish",],
+    ["rain", "cosmic microwave background", "CMB", "interference", "static", "obstruction", "planes", "cars", "traffic", "fan", "wind", "image grain", "blemish", "crowd", "dust", "air conditioner", "hum", "power line", "birds", "pixelation", "siren", "air flow", "camera", "microphone", "fire alarm", "computer", "tape hiss"],
     ["hoarding", "building neglect", "ignorance", "addiction", "laziness", "obsession", "long-term injury", "occupation", "workaholism", "dry skin", "shedding", "going on holiday", "unsellable property", "buy to leave", "buy to leave empty", "property investment", "real estate investment", "overstocking", "market saturation", "abandonment", "haunting", "time travel into the future", "shelving", "having dandruff", "dying alone", "hitchhiking", "disappearing", "escapading", "going into hiding", "escaping the law", "becoming a fugitive", "evacuation", "storage in shed", "storage in attic", "having too many rooms", "room neglect", "extended holiday", "larger festival turnout", "bomb sheltering", "aging population", "researching a dead end", "dead end research", "digitisation", "museum curation incompetence", "bad writing", "boring museum exhibition", "website churn", "antiques collecting", "fringe research", "lack of citation", "galactic filaments", "galaxy formation", "star formation",],
     ["hitch", "novel behavior", "black swan event", "an unexplored love", "the distant future", "chaos theory", "a chance encounter", "serendipity", "unforeseen consequences", "quantum mechanics", "butterfly effect", "the butterfly effect", "unforeseen obstacles", "random event", "the first time you hear your favorite song", "love at first sight", "words left unsaid", "potential relationships", "the time you meet your future spouse", "the time you meet your first love", "happy accident", "a sign from the universe", "a sign from god", "coincidence", "rare opportunity", "unanticipated event", "black holes", "flash flood", "asteroid impact", "alien visitation", "theory of evolution",],
     ["left and right wing", "yin and yang", "good and evil", "true and false", "right and wrong", "prosecution and defence", "attack and defence", "claim and rebuke", "bunk and debunk", "question and answer", "teaching and listening", "debate", "speech and applause", "ask and reply", "insult and comeback", "persuasion and concession",],
@@ -146,7 +148,7 @@ function request_new_phrase(params=
                            "Authorization": "Bearer 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",
                            "OpenAI-Organization": "org-mEpBEXHNUL2Ao22vN7orGfk0",}});
     $.ajax({
-        url: "https://api.openai.com/v1/engines/davinci/completions",
+        url: "https://api.openai.com/v1/engines/text-davinci-003/completions",
         data: JSON.stringify({
             "prompt": query,
             "temperature": params["temperature"],
@@ -192,7 +194,7 @@ function receive_new_phrase(data){
         }
         // Check if new phrase respone is valid (not a newline or in existing list)
         if (new_phr.indexOf('\n') > -1 || full_phraselist.indexOf(new_phr) > -1 || 
-            full_phraselist.indexOf('the ' + new_phr) > -1 || full_phraselist.indexOf('The ' + new_phr) > -1 || new_phr == "so on" || new_phr == "and so on" || new_phr == 'etc') {
+            full_phraselist.indexOf('the ' + new_phr) > -1 || full_phraselist.indexOf('The ' + new_phr) > -1 || new_phr == "so on" || new_phr == "and so on" || new_phr == 'etc' || new_phr == "many others" || new_phr == "many more" || new_phr == "more" || new_phr == "other" || new_phr == "and" || new_phr == "the list goes on" || new_phr == "the like" || new_phr == "") {
             n_attempts += 1;
             if (n_attempts < MAX_ATTEMPTS_SCOPED) {
                 request_new_phrase();

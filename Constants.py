@@ -53,7 +53,7 @@ Y_types = [float for _ in Y_labels_de]
 n_stat = len(ngc_cols) + 1  # Number of x values suffixed to end of vector
 n_de_Y_labels = (len(labels_de) - n_stat)  # Number of default Y labels
 
-# Key
+# Key   # note in an ideal game some letters are revealed
 l_key = \
     " inc = Probability word should be included at all in its ideal game\n" + \
     " dif = Inverse difficulty (general intuitive comb of skt, spl & IQ)\n" + \
